@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 const ErrorPage = () => {
   const navigate = useNavigate();
   const navHome = () => {
-    navigate("/");
+    navigate("/home");
   };
   return (
     <>

@@ -24,27 +24,37 @@ function MyCard() {
     getCardInfo();
   }, []);
   return (
-    <>
+    <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {users.map((user, index) => {
         return (
           <Card
             key={index}
-            className="h-300 max-h-150 w-150 max-w-lg"
+            className="max-h-150 max-w-lg"
             imgAlt="Random image"
           >
-            <img src={user.image.url} alt="" className="h-75 w-full" />
-            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <img
+              src={user.image.url}
+              alt={`${user.name.first} ${user.name.last}`}
+              className="mx-auto h-40 w-40 rounded-full object-cover"
+            />
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
               {user.name.first} {user.name.last}
-            </h5>
-            <p className="font-normal text-gray-700 dark:text-gray-400">
-              {user.email}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Email:</strong> {user.email}
             </p>
-            <p className="font-normal text-gray-700 dark:text-gray-200">{`Phone: ${user.phone}`}</p>
-            <p className="font-normal text-gray-700 dark:text-gray-200">{`Address: ${user.address.city} ${user.address.street} ${user.address.houseNumber}`}</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Phone:</strong> {user.phone}
+            </p>
+            <p className="text-gray-600 dark:text-gray-300">
+              <strong>Address:</strong>
+              <br />
+              {`${user.address.street} ${user.address.houseNumber}, ${user.address.city}`}
+            </p>
           </Card>
         );
       })}
-    </>
+    </div>
   );
 }
 export default MyCard;

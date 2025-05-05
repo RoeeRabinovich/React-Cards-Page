@@ -3,36 +3,57 @@ import { useForm } from "react-hook-form";
 import { loginSchema } from "../validations/login.joi";
 import axios from "axios";
 import { Button, FloatingLabel } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { userActions } from "../../store/userSlice";
 
-type FormData = {
-  email: string;
-  password: string;
-};
+// type FormData = {
+//   email: string;
+//   password: string;
+// };
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const initialFormData = {
+    email: "",
+    password: "",
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormData>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+  } = useForm({
+    defaultValues: initialFormData,
     mode: "onChange",
     resolver: joiResolver(loginSchema),
   });
 
-  const submitForm = async (data: FormData) => {
-    console.log("Form submitted", data);
+  const submitForm = async (form: typeof initialFormData) => {
     try {
-      await axios.post(
+      const token = await axios.post(
         "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/login",
-        data,
+        form,
       );
-      console.log("Success");
+      console.log(token.data);
+      toast.success("Login Successful");
+
+      //parsed token with atob
+      const parsedToken = JSON.parse(atob(token.data.split(".")[1]));
+
+      // get user data from token & set it in headers
+      axios.defaults.headers.common["x-auth-token"] = token.data;
+
+      // get user data from api
+      const res = await axios.get(
+        "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/" +
+          parsedToken._id,
+      );
+      //update user data
+      dispatch(userActions.login(res.data));
     } catch (error) {
       console.log("Error submitting data", error);
+      toast.error("Failed to Login.");
     }
   };
 
@@ -62,7 +83,7 @@ const Login = () => {
         )}
 
         <Button type="submit" className="w-full" disabled={!isValid}>
-          Submit
+          Login
         </Button>
       </form>
     </main>
