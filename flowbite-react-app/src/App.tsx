@@ -8,6 +8,7 @@ import Home from "./pages/Home.page";
 import Register from "./pages/register.page";
 import Profile from "./pages/profile.page";
 import { CardDetails } from "./pages/CardDetails";
+import RouteGuard from "./components/RouteGuard";
 export default function App() {
   return (
     <>
@@ -20,7 +21,15 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <RouteGuard>
+              <Profile />
+            </RouteGuard>
+          }
+        />
+
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>

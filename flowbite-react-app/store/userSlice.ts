@@ -1,27 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type Tuser = {
+type TUser = {
   _id: string;
-  image: {
-    url: string;
-  };
   name: {
     first: string;
+    middle?: string;
     last: string;
   };
+  isBusiness: boolean;
+  isAdmin: boolean;
   email: string;
   phone: string;
   address: {
     city: string;
+    state: string;
+    country: string;
     street: string;
-    address: string;
-    houseNumber: string;
+    zip?: string;
   };
 };
 
 //this is the initial state of the user slice
 const initialState = {
-  user: null as Tuser | null,
+  user: null as TUser | null,
 };
 
 // this is the user slice of the redux store

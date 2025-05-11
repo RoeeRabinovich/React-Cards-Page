@@ -4,14 +4,14 @@ import MyCard from "../components/Card";
 import { MyFooter } from "../components/Footer";
 import { TCard } from "../types/TCard";
 const Home = () => {
-  const [cards, setCards] = useState<TCard>();
+  // const [cards, setCards] = useState<TCard>();
   useEffect(() => {
     const fetchCards = async () => {
       try {
         const response = await axios.post(
           "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
         );
-        setCards(response.data);
+        // setCards(response.data);
       } catch (error) {
         console.log("Error getting data.", error);
       }
