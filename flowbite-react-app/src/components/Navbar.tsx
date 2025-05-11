@@ -4,12 +4,14 @@ import {
   NavbarBrand,
   NavbarCollapse,
   NavbarToggle,
+  TextInput,
 } from "flowbite-react";
-import Searchbar from "./Search";
 import { Link } from "react-router";
+import { IoIosSearch } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { TRootState } from "../../store/store";
 import { userActions } from "../../store/userSlice";
+import { searchAction } from "../../store/searchSlice";
 
 export function MyNavbar() {
   const dispatch = useDispatch();
@@ -28,7 +30,12 @@ export function MyNavbar() {
         </span>
       </NavbarBrand>
       <NavbarToggle />
-      <Searchbar></Searchbar>
+      <NavbarBrand>
+        <TextInput
+          rightIcon={IoIosSearch}
+          onChange={(e) => dispatch(searchAction.setSearchWord(e.target.value))}
+        />
+      </NavbarBrand>
       <NavbarCollapse className="dark:text-white">
         <Link to={"/home"} className="text-lg">
           Home
@@ -36,23 +43,28 @@ export function MyNavbar() {
         <Link to={"/about"} className="text-lg">
           About
         </Link>
-        {user === null && (
+        {!user && (
           <Link to={"/register"} className="text-lg">
             Register
           </Link>
         )}
-        {user === null && (
+        {!user && (
           <Link to={"/login"} className="text-lg">
             Login
           </Link>
         )}
 
-        {user !== null && (
+        {user && (
           <Link to={"/profile"} className="text-lg">
             Profile
           </Link>
         )}
-        {user !== null && (
+        {user && user.isBusiness && (
+          <Link to={"/favourites"} className="text-lg">
+            Favourites
+          </Link>
+        )}
+        {user && (
           <Link
             to={"/home"}
             onClick={() => dispatch(userActions.logout())}

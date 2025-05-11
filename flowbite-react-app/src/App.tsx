@@ -1,5 +1,4 @@
 import { MyNavbar } from "./components/Navbar";
-
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/login.page";
 import About from "./pages/about.page";
@@ -9,6 +8,7 @@ import Register from "./pages/register.page";
 import Profile from "./pages/profile.page";
 import { CardDetails } from "./pages/CardDetails";
 import RouteGuard from "./components/RouteGuard";
+import Favourites from "./pages/Favourites.page";
 export default function App() {
   return (
     <>
@@ -26,6 +26,14 @@ export default function App() {
           element={
             <RouteGuard>
               <Profile />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/favourites"
+          element={
+            <RouteGuard>
+              <Favourites />
             </RouteGuard>
           }
         />
