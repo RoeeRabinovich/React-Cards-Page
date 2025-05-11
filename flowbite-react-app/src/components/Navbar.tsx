@@ -21,10 +21,10 @@ export function MyNavbar() {
         <img
           src="https://picsum.photos/150"
           className="mr-3 h-6 rounded-full sm:h-9"
-          alt="Roee's React Cards"
+          alt="Random picture"
         />
         <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-          Flowbite React
+          Roee's React Cards
         </span>
       </NavbarBrand>
       <NavbarToggle />

@@ -7,6 +7,7 @@ import ErrorPage from "./pages/ErrorPage.page";
 import Home from "./pages/Home.page";
 import Register from "./pages/register.page";
 import Profile from "./pages/profile.page";
+import { CardDetails } from "./pages/CardDetails";
 export default function App() {
   return (
     <>
@@ -14,6 +15,8 @@ export default function App() {
 
       <Routes>
         <Route path="/home" element={<Home />} />
+        <Route path="/card/:id" element={<CardDetails />} />
+
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

@@ -1,24 +1,22 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MyCard from "../components/Card";
 import { MyFooter } from "../components/Footer";
+import { TCard } from "../types/TCard";
 const Home = () => {
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/login",
-        {
-          email: "admin@gmail.com",
-          password: "Abc!123Abc",
-        },
-      );
-      localStorage.setItem("Token", response.data);
-    } catch (error) {
-      console.log("Error getting data.", error);
-    }
-  };
+  const [cards, setCards] = useState<TCard>();
   useEffect(() => {
-    login();
+    const fetchCards = async () => {
+      try {
+        const response = await axios.post(
+          "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
+        );
+        setCards(response.data);
+      } catch (error) {
+        console.log("Error getting data.", error);
+      }
+    };
+    fetchCards();
   }, []);
   return (
     <>
