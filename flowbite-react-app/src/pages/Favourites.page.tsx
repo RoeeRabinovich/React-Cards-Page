@@ -12,6 +12,23 @@ const Favourites = () => {
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
   );
+  const user = useSelector((state: TRootState) => state.userSlice.user);
+
+  const handleRemove = async (cardId: string) => {
+    try {
+      setLoading(true);
+      // Send a PATCH request to toggle like (remove from favourites)
+      await axios.patch(
+        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+      );
+      // Remove the card from local state
+      setCards((prev) => prev.filter((card) => card._id !== cardId));
+    } catch (error) {
+      console.error("Error removing card from favourites:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredBySearch = () => {
     if (cards) {
@@ -21,7 +38,7 @@ const Favourites = () => {
     }
     return cards;
   };
-  const user = useSelector((state: TRootState) => state.userSlice.user);
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -46,16 +63,53 @@ const Favourites = () => {
   }, [user?._id]);
 
   return (
-    <div className="flex flex-col items-center justify-start gap-2">
-      <h1 className="text-2xl">Favourites Page</h1>
+    <div className="flex flex-col items-center justify-center gap-2 dark:bg-gray-900">
+      <h1 className="text-2xl dark:text-white">Favourites Page</h1>
 
-      {cards &&
-        filteredBySearch()?.map((card) => (
-          <Card key={card._id}>
-            <h2>{card.title}</h2>
-            <Button onClick={() => nav("/card/" + card._id)}>Click</Button>
-          </Card>
-        ))}
+      <div className="flex w-full flex-row items-center justify-center gap-6">
+        {cards &&
+          filteredBySearch()?.map((card) => (
+            <Card
+              key={card._id}
+              className="w-96 cursor-pointer dark:bg-gray-800"
+              imgAlt="Random image"
+            >
+              <img
+                src={card.image.url}
+                alt={card.image.alt}
+                className="mx-auto h-40 w-40 rounded-full object-cover"
+              />
+              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
+                {card.title}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Email:</strong> {card.email}
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Phone:</strong> {card.phone}
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                <strong>Address:</strong>
+                <br />
+                {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
+              </p>
+              <Button
+                className={"cursor-pointer"}
+                onClick={() => nav("/card/" + card._id)}
+              >
+                Read More.
+              </Button>
+              <Button
+                className={
+                  "cursor-pointer bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                }
+                onClick={() => handleRemove(card._id)}
+              >
+                Remove
+              </Button>
+            </Card>
+          ))}
+      </div>
 
       {loading && <Spinner></Spinner>}
     </div>

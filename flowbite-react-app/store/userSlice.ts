@@ -7,14 +7,19 @@ type TUser = {
     middle?: string;
     last: string;
   };
+  phone: string;
+  image: {
+    url: string;
+    alt: string;
+  };
   isBusiness: boolean;
   isAdmin: boolean;
   email: string;
-  phone: string;
   address: {
     city: string;
     state: string;
     country: string;
+    houseNumber: string;
     street: string;
     zip?: string;
   };

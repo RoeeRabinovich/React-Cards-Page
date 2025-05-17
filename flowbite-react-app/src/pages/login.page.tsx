@@ -35,7 +35,7 @@ const Login = () => {
         "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/login",
         form,
       );
-      console.log(token.data);
+
       toast.success("Login Successful");
 
       //parsed token with atob
@@ -51,6 +51,9 @@ const Login = () => {
       );
       //update user data
       dispatch(userActions.login(res.data));
+
+      localStorage.setItem("token", token.data);
+      localStorage.setItem("user", JSON.stringify(res.data));
     } catch (error) {
       console.log("Error submitting data", error);
       toast.error("Failed to Login.");

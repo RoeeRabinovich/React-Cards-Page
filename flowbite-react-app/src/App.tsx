@@ -9,7 +9,20 @@ import Profile from "./pages/profile.page";
 import { CardDetails } from "./pages/CardDetails";
 import RouteGuard from "./components/RouteGuard";
 import Favourites from "./pages/Favourites.page";
+import { useEffect } from "react";
+import axios from "axios";
+import { userActions } from "../store/userSlice";
+import { useDispatch } from "react-redux";
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    if (token && user) {
+      axios.defaults.headers.common["x-auth-token"] = token;
+      dispatch(userActions.login(JSON.parse(user)));
+    }
+  }, [dispatch]);
   return (
     <>
       <MyNavbar />

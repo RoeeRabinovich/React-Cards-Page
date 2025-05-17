@@ -1,4 +1,4 @@
-import { Button, Card } from "flowbite-react";
+import { Button, Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { TCard } from "../types/TCard";
 import axios from "axios";
@@ -10,6 +10,7 @@ import { FaHeart } from "react-icons/fa";
 
 function MyCard() {
   const [cards, setCards] = useState<TCard[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigate();
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
@@ -40,15 +41,16 @@ function MyCard() {
         let cardsArr = [...cards];
 
         if (isLiked) {
-          card.likes = card?.likes.filter(
+          card.likes = card.likes.filter(
             (like: string) => like !== user?._id + "",
           );
           const cardIndex = cardsArr.findIndex((card) => card._id === cardId);
-          cardsArr[cardIndex] = card;
-          toast.success("Card liked successfully");
+          cardsArr[cardIndex] = { ...card };
+          toast.success("Card unliked successfully");
         } else {
           card.likes = [...card.likes, user?._id + ""];
-          cardsArr = [...cardsArr, card];
+          const cardIndex = cardsArr.findIndex((card) => card._id === cardId);
+          cardsArr[cardIndex] = { ...card };
           toast.success("Card liked successfully");
         }
         setCards(cardsArr);
@@ -61,19 +63,28 @@ function MyCard() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
         );
+
         setCards(response.data);
       } catch (error) {
         console.log("Error getting data.", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCards();
   }, []);
   return (
     <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {cards &&
+      {loading ? (
+        <div className="flex items-center justify-center">
+          <Spinner />
+        </div>
+      ) : (
+        cards &&
         filteredBySearch().map((card) => {
           const isLiked = card.likes.includes(user?._id + "");
           return (
@@ -116,7 +127,8 @@ function MyCard() {
               )}
             </Card>
           );
-        })}
+        })
+      )}
     </div>
   );
 }
