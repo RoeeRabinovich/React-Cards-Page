@@ -3,17 +3,24 @@ import { useForm } from "react-hook-form";
 import { loginSchema } from "../validations/login.joi";
 import axios from "axios";
 import { Button, FloatingLabel } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { userActions } from "../../store/userSlice";
-
-// type FormData = {
-//   email: string;
-//   password: string;
-// };
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { TUser } from "../../store/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state: TUser) => state.userSlice.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/home");
+    }
+  }, [user, navigate]);
+
   const initialFormData = {
     email: "",
     password: "",
@@ -62,6 +69,9 @@ const Login = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gray-900">
+      <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+        Login to your account
+      </h1>
       <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-4">
         <FloatingLabel
           {...register("email")}
@@ -88,6 +98,15 @@ const Login = () => {
         <Button type="submit" className="w-full" disabled={!isValid}>
           Login
         </Button>
+        <p className="text-lg font-normal text-gray-500 dark:text-gray-400">
+          Don't have an account?
+        </p>
+        <a
+          href="/register"
+          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        >
+          Register here
+        </a>
       </form>
     </main>
   );

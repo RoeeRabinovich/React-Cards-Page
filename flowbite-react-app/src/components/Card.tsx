@@ -3,14 +3,17 @@ import { useEffect, useState } from "react";
 import { TCard } from "../types/TCard";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TRootState } from "../../store/store";
+import { storeCards } from "../../store/cardSlice";
 import { toast } from "react-toastify";
 import { FaHeart } from "react-icons/fa";
 
 function MyCard() {
-  const [cards, setCards] = useState<TCard[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const cards = useSelector((state: TRootState) => state.cardSlice.cards);
+
   const nav = useNavigate();
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
@@ -20,15 +23,15 @@ function MyCard() {
   const filteredBySearch = () => {
     if (cards) {
       return cards.filter((card) =>
-        card.title.toLocaleLowerCase().includes(searchWord.toLowerCase()),
+        card.title.toLowerCase().includes(searchWord.toLowerCase()),
       );
     }
-    return cards;
+    return [];
   };
+
   const LikeOrUnlikeCard = async (cardId: string) => {
     try {
       const token = localStorage.getItem("token");
-
       axios.defaults.headers.common["x-auth-token"] = token;
 
       await axios.patch(
@@ -38,7 +41,7 @@ function MyCard() {
 
       if (card) {
         const isLiked = card.likes.includes(user?._id + "");
-        let cardsArr = [...cards];
+        const cardsArr: TCard[] = [...cards];
 
         if (isLiked) {
           card.likes = card.likes.filter(
@@ -53,7 +56,8 @@ function MyCard() {
           cardsArr[cardIndex] = { ...card };
           toast.success("Card liked successfully");
         }
-        setCards(cardsArr);
+        // Update Redux store
+        dispatch(storeCards(cardsArr));
       }
     } catch (error) {
       console.log("Error liking/unliking a card:", error);
@@ -61,22 +65,24 @@ function MyCard() {
   };
 
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
-        );
+    if (cards.length === 0) {
+      const fetchCards = async () => {
+        try {
+          setLoading(true);
+          const response = await axios.get(
+            "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
+          );
+          dispatch(storeCards(response.data));
+        } catch (error) {
+          console.log("Error getting data.", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchCards();
+    }
+  }, [cards.length, dispatch]);
 
-        setCards(response.data);
-      } catch (error) {
-        console.log("Error getting data.", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCards();
-  }, []);
   return (
     <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {loading ? (
@@ -84,7 +90,6 @@ function MyCard() {
           <Spinner />
         </div>
       ) : (
-        cards &&
         filteredBySearch().map((card) => {
           const isLiked = card.likes.includes(user?._id + "");
           return (
@@ -118,6 +123,7 @@ function MyCard() {
               >
                 Read More.
               </Button>
+
               {user && (
                 <FaHeart
                   className={`${isLiked ? "text-red-500" : "text-black"}`}

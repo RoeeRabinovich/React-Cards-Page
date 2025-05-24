@@ -16,13 +16,11 @@ const RouteGuard = (props: RouteGuardProps) => {
   }); //get user from slice store
 
   if (!user) {
-    return <Navigate to="/signin" />;
-  }
-  if (bizOnly && !user.isBusiness) {
-    return <Navigate to="/" />;
-  }
-  if (adminOnly && !user.isAdmin) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
+  } else if (bizOnly && !user.isBusiness) {
+    return <Navigate to="/home" />;
+  } else if (adminOnly && !user.isAdmin) {
+    return <Navigate to="/home" />;
   }
   return <>{children}</>;
 };

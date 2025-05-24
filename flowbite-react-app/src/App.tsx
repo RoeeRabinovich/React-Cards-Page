@@ -13,8 +13,10 @@ import { useEffect } from "react";
 import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
+
 export default function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
@@ -23,12 +25,21 @@ export default function App() {
       dispatch(userActions.login(JSON.parse(user)));
     }
   }, [dispatch]);
+
   return (
     <>
       <MyNavbar />
 
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <RouteGuard>
+              <Home />
+            </RouteGuard>
+          }
+        />
+
         <Route path="/card/:id" element={<CardDetails />} />
 
         <Route path="/about" element={<About />} />

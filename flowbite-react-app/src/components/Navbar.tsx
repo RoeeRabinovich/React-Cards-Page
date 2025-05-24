@@ -32,6 +32,7 @@ export function MyNavbar() {
       <NavbarToggle />
       <NavbarBrand>
         <TextInput
+          placeholder="Search Cards"
           rightIcon={IoIosSearch}
           onChange={(e) => dispatch(searchAction.setSearchWord(e.target.value))}
         />

@@ -19,7 +19,7 @@ export const CardDetails = () => {
 
         setCard(response.data);
       } catch (error) {
-        setError(`error fetching card with id: ${id}.`);
+        setError(`error fetching card with id: ${id}.  ${error}`);
       }
     };
     fetchCardDetails();
@@ -27,16 +27,27 @@ export const CardDetails = () => {
 
   return card ? (
     <Card title={card.title}>
-      <img className="max-w-md" src={card.image.url} alt={card.image.alt} />
-      <h2>{card.subtitle}</h2>
-      <p>{card.description}</p>
-      <p>{card.phone}</p>
-      <p>{card.email}</p>
-      <p>{card.web}</p>
-      <p>
-        {card.address.country},{card.address.city},{card.address.street},
-        {card.address.houseNumber}
-      </p>
+      <div className="mx-auto w-xl space-y-6 rounded-2xl bg-white p-6 text-center shadow-lg dark:bg-gray-800">
+        <img
+          src={card?.image.url}
+          alt={`${card?.image.alt} picture`}
+          className="mx-auto h-50 w-50 rounded-full object-cover"
+        />
+        <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
+          {card?.title} {card?.subtitle}
+        </h2>
+        <p className="text-lg text-gray-600 dark:text-gray-200">
+          <strong>Email:</strong> {card?.email}
+        </p>
+        <p className="text-lg text-gray-600 dark:text-gray-200">
+          <strong>Phone:</strong> {card?.phone}
+        </p>
+        <p className="text-lg text-gray-600 dark:text-gray-200">
+          <strong>Address:</strong>
+          <br />
+          {`${card?.address.street} ${card?.address.houseNumber}, ${card?.address.city}`}
+        </p>
+      </div>
     </Card>
   ) : (
     <h1>{error}</h1>

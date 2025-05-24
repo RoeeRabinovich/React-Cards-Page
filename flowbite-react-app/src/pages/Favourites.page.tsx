@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { TRootState } from "../../store/store";
 import { TCard } from "../types/TCard";
 const Favourites = () => {
-  const [cards, setCards] = useState<any[]>([]);
+  const [cards, setCards] = useState<TCard[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigate();
   const searchWord = useSelector(
