@@ -66,48 +66,52 @@ const Favourites = () => {
     <div className="flex flex-col items-center justify-center gap-2 dark:bg-gray-900">
       <h1 className="text-2xl dark:text-white">Favourites Page</h1>
 
-      <div className="flex w-full flex-row items-center justify-center gap-6">
+      <div className="flex w-full flex-wrap justify-center gap-3">
         {cards &&
           filteredBySearch()?.map((card) => (
-            <Card
+            <div
               key={card._id}
-              className="w-96 cursor-pointer dark:bg-gray-800"
-              imgAlt="Random image"
+              className="lg:w-m flex w-full justify-center sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
             >
-              <img
-                src={card.image.url}
-                alt={card.image.alt}
-                className="mx-auto h-40 w-40 rounded-full object-cover"
-              />
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
-                {card.title}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Email:</strong> {card.email}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Phone:</strong> {card.phone}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Address:</strong>
-                <br />
-                {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
-              </p>
-              <Button
-                className={"cursor-pointer"}
-                onClick={() => nav("/card/" + card._id)}
+              <Card
+                className="w-96 cursor-pointer dark:bg-gray-800"
+                imgAlt="Random image"
               >
-                Read More.
-              </Button>
-              <Button
-                className={
-                  "cursor-pointer bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
-                }
-                onClick={() => handleRemove(card._id)}
-              >
-                Remove
-              </Button>
-            </Card>
+                <img
+                  src={card.image.url}
+                  alt={card.image.alt}
+                  className="mx-auto h-40 w-40 rounded-full object-cover"
+                />
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
+                  {card.title}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Email:</strong> {card.email}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Phone:</strong> {card.phone}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Address:</strong>
+                  <br />
+                  {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
+                </p>
+                <Button
+                  className={"cursor-pointer"}
+                  onClick={() => nav("/card/" + card._id)}
+                >
+                  Read More.
+                </Button>
+                <Button
+                  className={
+                    "cursor-pointer bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                  }
+                  onClick={() => handleRemove(card._id)}
+                >
+                  Remove
+                </Button>
+              </Card>
+            </div>
           ))}
       </div>
 

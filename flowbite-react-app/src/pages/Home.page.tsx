@@ -3,7 +3,7 @@ import { MyFooter } from "../components/Footer";
 
 const Home = () => {
   return (
-    <main className="h-screen dark:bg-gray-700">
+    <main>
       <div className="p-3 text-center">
         <h1 className="dark:text-gray my-4 text-6xl dark:text-white">
           Cards Page

@@ -1,4 +1,4 @@
-import { Button, Card, Spinner } from "flowbite-react";
+import { Button, Card, Pagination, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { TCard } from "../types/TCard";
 import axios from "axios";
@@ -11,6 +11,9 @@ import { FaHeart } from "react-icons/fa";
 
 function MyCard() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 12;
+
   const dispatch = useDispatch();
   const cards = useSelector((state: TRootState) => state.cardSlice.cards);
 
@@ -41,21 +44,28 @@ function MyCard() {
 
       if (card) {
         const isLiked = card.likes.includes(user?._id + "");
-        const cardsArr: TCard[] = [...cards];
+        // Create a new array of cards with the updated card
+        const cardsArr: TCard[] = cards.map((c) => {
+          if (c._id !== cardId) return c;
+          // Return a new card object with updated likes
+          return {
+            ...c,
+            likes: isLiked
+              ? c.likes.filter((like: string) => like !== user?._id + "")
+              : [...c.likes, user?._id + ""],
+          };
+        });
 
-        if (isLiked) {
-          card.likes = card.likes.filter(
-            (like: string) => like !== user?._id + "",
-          );
-          const cardIndex = cardsArr.findIndex((card) => card._id === cardId);
-          cardsArr[cardIndex] = { ...card };
-          toast.success("Card unliked successfully");
-        } else {
-          card.likes = [...card.likes, user?._id + ""];
-          const cardIndex = cardsArr.findIndex((card) => card._id === cardId);
-          cardsArr[cardIndex] = { ...card };
-          toast.success("Card liked successfully");
-        }
+        toast(isLiked ? "Unliked 👎" : "Liked ❤️❤️❤️", {
+          position: "bottom-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         // Update Redux store
         dispatch(storeCards(cardsArr));
       }
@@ -83,57 +93,76 @@ function MyCard() {
     }
   }, [cards.length, dispatch]);
 
-  return (
-    <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {loading ? (
-        <div className="flex items-center justify-center">
-          <Spinner />
-        </div>
-      ) : (
-        filteredBySearch().map((card) => {
-          const isLiked = card.likes.includes(user?._id + "");
-          return (
-            <Card
-              key={card._id}
-              className="max-h-150 max-w-lg"
-              imgAlt="Random image"
-            >
-              <img
-                src={card.image.url}
-                alt={card.image.alt}
-                className="mx-auto h-40 w-40 rounded-full object-cover"
-              />
-              <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
-                {card.title}
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Email:</strong> {card.email}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Phone:</strong> {card.phone}
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                <strong>Address:</strong>
-                <br />
-                {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
-              </p>
-              <Button
-                className={"cursor-pointer"}
-                onClick={() => nav("/card/" + card._id)}
-              >
-                Read More.
-              </Button>
+  const filteredCards = filteredBySearch();
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
 
-              {user && (
-                <FaHeart
-                  className={`${isLiked ? "text-red-500" : "text-black"}`}
-                  cursor={"pointer"}
-                  onClick={() => LikeOrUnlikeCard(card._id)}
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
+
+  return (
+    <div>
+      <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          currentCards.map((card) => {
+            const isLiked = card.likes.includes(user?._id + "");
+            return (
+              <Card
+                key={card._id}
+                className="max-h-150 max-w-lg"
+                imgAlt="Random image"
+              >
+                <img
+                  src={card.image.url}
+                  alt={card.image.alt}
+                  className="mx-auto h-40 w-40 rounded-full object-cover"
                 />
-              )}
-            </Card>
-          );
-        })
+                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-300">
+                  {card.title}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Email:</strong> {card.email}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Phone:</strong> {card.phone}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  <strong>Address:</strong>
+                  <br />
+                  {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
+                </p>
+                <Button
+                  className={"cursor-pointer"}
+                  onClick={() => nav("/card/" + card._id)}
+                >
+                  Read More.
+                </Button>
+                {user && (
+                  <FaHeart
+                    className={`${isLiked ? "text-red-500" : "text-black"}`}
+                    cursor={"pointer"}
+                    onClick={() => LikeOrUnlikeCard(card._id)}
+                  />
+                )}
+              </Card>
+            );
+          })
+        )}
+      </div>
+      {/* Flowbite Pagination */}
+      {totalPages > 1 && (
+        <div className="my-6 flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            showIcons
+          />
+        </div>
       )}
     </div>
   );

@@ -27,7 +27,7 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <MyNavbar />
 
       <Routes>
@@ -64,6 +64,6 @@ export default function App() {
 
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
-    </>
+    </div>
   );
 }

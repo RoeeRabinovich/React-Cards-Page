@@ -26,7 +26,7 @@ export const CardDetails = () => {
   }, [id]);
 
   return card ? (
-    <Card title={card.title}>
+    <Card title={card.title} className="m-10">
       <div className="mx-auto w-xl space-y-6 rounded-2xl bg-white p-6 text-center shadow-lg dark:bg-gray-800">
         <img
           src={card?.image.url}

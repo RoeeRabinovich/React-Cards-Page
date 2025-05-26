@@ -43,7 +43,16 @@ const Login = () => {
         form,
       );
 
-      toast.success("Login Successful");
+      toast.success("Login Successful", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
 
       //parsed token with atob
       const parsedToken = JSON.parse(atob(token.data.split(".")[1]));
@@ -63,7 +72,16 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(res.data));
     } catch (error) {
       console.log("Error submitting data", error);
-      toast.error("Failed to Login.");
+      toast.error("Failed to Login.", {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
