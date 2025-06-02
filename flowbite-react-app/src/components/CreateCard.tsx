@@ -67,39 +67,44 @@ const CreateCard = () => {
     { name: "address.zip", label: "ZIP Code", type: "number" },
   ];
   return (
-    <div>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-8 dark:bg-gray-800">
       <form
-        className="mx-auto mt-10 max-w-md"
+        className="flex w-full max-w-4xl flex-col items-center justify-center rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900"
         onSubmit={handleSubmit(submitForm)}
       >
-        <h2 className="mb-6 text-2xl font-bold">Create Business Card</h2>
-        {cardFields.map((field) => (
-          <div key={field.name} className="mb-4">
-            <FloatingLabel
-              {...register(field.name as FieldPath<TCard>)}
-              type={field.type}
-              color={
-                errors[field.name as keyof typeof errors] ? "error" : "success"
-              }
-              variant="standard"
-              label={field.label}
-              placeholder={field.label}
-              sizing="md"
-            />
-            {errors[field.name as keyof typeof errors] && (
-              <div className="mt-1 text-sm text-red-600">
-                {
-                  (errors[field.name as keyof typeof errors] as FieldError)
-                    ?.message
+        <h1 className="mb-8 text-center text-4xl font-bold text-gray-800 dark:text-white">
+          Create Business Card
+        </h1>
+        <div className="grid w-full grid-cols-2 grid-rows-7 gap-6">
+          {cardFields.map((field) => (
+            <div key={field.name}>
+              <FloatingLabel
+                {...register(field.name as FieldPath<TCard>)}
+                type={field.type}
+                color={
+                  errors[field.name as keyof typeof errors]
+                    ? "error"
+                    : "success"
                 }
-              </div>
-            )}
-          </div>
-        ))}
+                variant="outlined"
+                label={field.label}
+                placeholder={field.label}
+              />
+              {errors[field.name as keyof typeof errors] && (
+                <div className="text-xs text-red-500">
+                  {
+                    (errors[field.name as keyof typeof errors] as FieldError)
+                      ?.message
+                  }
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
         <Button
           type="submit"
           disabled={!isValid}
-          className="mt-6 w-full rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          className="mt-6 w-sm rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
         >
           Create Card
         </Button>
