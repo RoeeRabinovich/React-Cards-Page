@@ -61,6 +61,11 @@ export function MyNavbar() {
           </Link>
         )}
         {user && user.isBusiness && (
+          <Link to={"/create-card"} className="text-lg">
+            Create Card
+          </Link>
+        )}
+        {user && user.isBusiness && (
           <Link to={"/favourites"} className="text-lg">
             Favourites
           </Link>

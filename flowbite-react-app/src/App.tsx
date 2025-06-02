@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
+import CreateCard from "./components/CreateCard";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -58,6 +59,14 @@ export default function App() {
           element={
             <RouteGuard>
               <Favourites />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/create-card"
+          element={
+            <RouteGuard>
+              <CreateCard />
             </RouteGuard>
           }
         />

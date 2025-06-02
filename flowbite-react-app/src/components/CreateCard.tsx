@@ -1,4 +1,4 @@
-import { FieldPath, useForm } from "react-hook-form";
+import { FieldPath, useForm, FieldError } from "react-hook-form";
 import { TCard } from "../types/TCard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import createCardSchema from "../validations/createCard.joi";
@@ -74,30 +74,27 @@ const CreateCard = () => {
       >
         <h2 className="mb-6 text-2xl font-bold">Create Business Card</h2>
         {cardFields.map((field) => (
-          <FloatingLabel
-            key={field.name}
-            className="mb-4"
-            label={field.label}
-            variant="standard"
-            color={
-              errors[field.name as keyof typeof errors] ? "error" : "success"
-            }
-          >
-            <input
+          <div key={field.name} className="mb-4">
+            <FloatingLabel
               {...register(field.name as FieldPath<TCard>)}
               type={field.type}
-              className={`block w-full rounded-lg border ${
-                errors[field.name as keyof typeof errors]
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500`}
+              color={
+                errors[field.name as keyof typeof errors] ? "error" : "success"
+              }
+              variant="standard"
+              label={field.label}
+              placeholder={field.label}
+              sizing="md"
             />
             {errors[field.name as keyof typeof errors] && (
-              <p className="text-xs text-red-500">
-                {errors[field.name as keyof typeof errors]?.message}
-              </p>
+              <div className="mt-1 text-sm text-red-600">
+                {
+                  (errors[field.name as keyof typeof errors] as FieldError)
+                    ?.message
+                }
+              </div>
             )}
-          </FloatingLabel>
+          </div>
         ))}
         <Button
           type="submit"
