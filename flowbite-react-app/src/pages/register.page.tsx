@@ -49,7 +49,16 @@ const Register = () => {
         "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users",
         data,
       );
-      toast.success("Registration successful!");
+      toast("Registration successful!", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       reset(); // Reset the form after successful registration
     } catch (error) {
       console.log("Error registering data", error);

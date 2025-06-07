@@ -34,8 +34,11 @@ export const CardDetails = () => {
           className="mx-auto h-50 w-50 rounded-full object-cover"
         />
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
-          {card?.title} {card?.subtitle}
+          {card?.title}
         </h2>
+        <h3 className="text-2xl font-medium text-gray-700 dark:text-gray-300">
+          {card?.subtitle}
+        </h3>
         <p className="text-lg text-gray-600 dark:text-gray-200">
           <strong>Email:</strong> {card?.email}
         </p>

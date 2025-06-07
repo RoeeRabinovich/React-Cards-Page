@@ -22,8 +22,10 @@ const createCardSchema = Joi.object({
     url: Joi.string()
       .uri({ scheme: ["http", "https"] })
       .message("Image url must be a valid URL")
-      .allow(""),
-    alt: Joi.string().min(2).max(256).allow(""),
+      .required(),
+    alt: Joi.string().min(2).max(256).required().messages({
+      "string.empty": "Image alt text cannot be empty",
+    }),
   }).required(),
   address: Joi.object({
     state: Joi.string().allow(""),

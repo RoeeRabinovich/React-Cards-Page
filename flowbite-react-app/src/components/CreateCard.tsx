@@ -1,10 +1,31 @@
-import { FieldPath, useForm, FieldError } from "react-hook-form";
+import { FieldPath, useForm, FieldError, FieldErrors } from "react-hook-form";
 import { TCard } from "../types/TCard";
 import { joiResolver } from "@hookform/resolvers/joi";
 import createCardSchema from "../validations/createCard.joi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button, FloatingLabel } from "flowbite-react";
+
+function getNestedError(
+  errors: FieldErrors<TCard>,
+  path: string,
+): FieldError | undefined {
+  const errorParts = path.split(".");
+  let current: unknown = errors;
+  for (const part of errorParts) {
+    if (current && typeof current === "object" && part in current) {
+      // Use index signature for object access
+      current = (current as Record<string, unknown>)[part];
+    } else {
+      return undefined;
+    }
+  }
+  // Only return if it's a FieldError (has a 'message' property)
+  if (current && typeof current === "object" && "message" in current) {
+    return current as FieldError;
+  }
+  return undefined;
+}
 
 const CreateCard = () => {
   const {
@@ -76,30 +97,26 @@ const CreateCard = () => {
           Create Business Card
         </h1>
         <div className="grid w-full grid-cols-2 grid-rows-7 gap-6">
-          {cardFields.map((field) => (
-            <div key={field.name}>
-              <FloatingLabel
-                {...register(field.name as FieldPath<TCard>)}
-                type={field.type}
-                color={
-                  errors[field.name as keyof typeof errors]
-                    ? "error"
-                    : "success"
-                }
-                variant="outlined"
-                label={field.label}
-                placeholder={field.label}
-              />
-              {errors[field.name as keyof typeof errors] && (
-                <div className="text-xs text-red-500">
-                  {
-                    (errors[field.name as keyof typeof errors] as FieldError)
-                      ?.message
-                  }
-                </div>
-              )}
-            </div>
-          ))}
+          {cardFields.map((field) => {
+            const error = getNestedError(errors, field.name);
+            return (
+              <div key={field.name}>
+                <FloatingLabel
+                  {...register(field.name as FieldPath<TCard>)}
+                  type={field.type}
+                  color={error ? "error" : "success"}
+                  variant="outlined"
+                  label={field.label}
+                  placeholder={field.label}
+                />
+                {error && (
+                  <div className="text-xs text-red-500">
+                    {(error as FieldError)?.message}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
         <Button
           type="submit"
