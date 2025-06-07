@@ -14,6 +14,7 @@ import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import CreateCard from "./components/CreateCard";
+import CardEditor from "./pages/CardEditorTable.page";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,14 @@ export default function App() {
           element={
             <RouteGuard>
               <CreateCard />
+            </RouteGuard>
+          }
+        />
+        <Route
+          path="/card-editor"
+          element={
+            <RouteGuard>
+              <CardEditor />
             </RouteGuard>
           }
         />

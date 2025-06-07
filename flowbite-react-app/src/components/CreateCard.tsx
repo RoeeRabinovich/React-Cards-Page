@@ -5,6 +5,8 @@ import createCardSchema from "../validations/createCard.joi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button, FloatingLabel } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { addCard } from "../../store/cardSlice";
 
 function getNestedError(
   errors: FieldErrors<TCard>,
@@ -28,6 +30,7 @@ function getNestedError(
 }
 
 const CreateCard = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -60,12 +63,13 @@ const CreateCard = () => {
 
   const submitForm = async (data: TCard) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
         data,
       );
+      dispatch(addCard(response.data));
       toast.success("Card created successfully!");
-      reset(); // Reset the form after successful creation
+      reset();
     } catch (error) {
       console.log("Error creating card", error);
       toast.error("Failed to create card. Please try again.");

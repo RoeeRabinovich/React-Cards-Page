@@ -10,8 +10,14 @@ const cardSlice = createSlice({
     storeCards: (state, action) => {
       state.cards = action.payload;
     },
+    removeCard: (state, action) => {
+      state.cards = state.cards.filter((card) => card._id !== action.payload);
+    },
+    addCard: (state, action) => {
+      state.cards.push(action.payload);
+    }
   },
 });
 
-export const { storeCards } = cardSlice.actions;
+export const { storeCards, removeCard, addCard } = cardSlice.actions;
 export default cardSlice.reducer;

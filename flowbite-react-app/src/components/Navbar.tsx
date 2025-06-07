@@ -70,6 +70,11 @@ export function MyNavbar() {
             Favourites
           </Link>
         )}
+        {user && user.isAdmin && (
+          <Link to={"/card-editor"} className="text-lg">
+            Edit
+          </Link>
+        )}
         {user && (
           <Link
             to={"/home"}

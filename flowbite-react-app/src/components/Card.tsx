@@ -77,14 +77,24 @@ function MyCard() {
   useEffect(() => {
     if (cards.length === 0) {
       const fetchCards = async () => {
+        setLoading(true);
         try {
-          setLoading(true);
           const response = await axios.get(
             "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
           );
           dispatch(storeCards(response.data));
         } catch (error) {
           console.log("Error getting data.", error);
+          toast.error("Error fetching cards. Please try again later.", {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
         } finally {
           setLoading(false);
         }
