@@ -143,7 +143,7 @@ const EditCard = ({ card, show, onClose }: EditCardProps) => {
   return (
     <Modal show={show} onClose={onClose} size="4xl">
       <ModalHeader>Edit Card</ModalHeader>
-      <ModalBody>
+      <ModalBody className="dark:bg-gray-900">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             {cardFields.map((field) => {

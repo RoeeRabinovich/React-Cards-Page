@@ -33,7 +33,6 @@ const FormInput = <T extends TRegisterData | TCard>({
         color={error ? "error" : "default"}
         required={required}
         disabled={disabled}
-        // Manually pass the registration props
         onChange={onChange}
         onBlur={onBlur}
         name={fieldName}

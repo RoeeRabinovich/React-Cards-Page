@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { TRootState } from "../../store/store";
+import MapView from "../components/MapView";
 
 const Profile = () => {
   const user = useSelector((state: TRootState) => state.userSlice.user);
@@ -29,6 +30,20 @@ const Profile = () => {
           <br />
           {`${user?.address.street} ${user?.address.houseNumber}, ${user?.address.city}`}
         </p>
+        {user && (
+          <div className="mt-4 w-full max-w-4xl">
+            <MapView
+              address={{
+                street: user.address.street || "",
+                houseNumber: user.address.houseNumber || "0",
+                city: user.address.city || "",
+                country: user.address.country || "",
+                state: user.address.state || "",
+                zip: user.address.zip || "0",
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

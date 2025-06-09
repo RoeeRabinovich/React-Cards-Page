@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TCard } from "../types/TCard";
 import { IoIosReturnLeft } from "react-icons/io";
+import MapView from "../components/MapView";
 
 export const CardDetails = () => {
   const [card, setCard] = useState<TCard>();
@@ -45,17 +46,32 @@ export const CardDetails = () => {
         <h3 className="text-2xl font-medium text-gray-700 dark:text-gray-300">
           {card?.subtitle}
         </h3>
-        <p className="text-lg text-gray-600 dark:text-gray-200">
-          <strong>Email:</strong> {card?.email}
-        </p>
-        <p className="text-lg text-gray-600 dark:text-gray-200">
-          <strong>Phone:</strong> {card?.phone}
-        </p>
-        <p className="text-lg text-gray-600 dark:text-gray-200">
-          <strong>Address:</strong>
-          <br />
-          {`${card?.address.street} ${card?.address.houseNumber}, ${card?.address.city}`}
-        </p>
+        <ul className="space-y-4 text-start text-lg text-gray-600 dark:text-gray-200">
+          <li>
+            <strong>Description:</strong> {card?.description}
+          </li>
+          <li>
+            <strong>Email:</strong> {card?.email}
+          </li>
+          <li>
+            <strong>Phone:</strong> {card?.phone}
+          </li>
+
+          <li>
+            <strong>Address:</strong>{" "}
+            {`${card?.address.street} ${card?.address.houseNumber}, ${card?.address.city}, ${card?.address.country}`}
+          </li>
+          <li>
+            <strong>Zip:</strong> {card?.address.zip}
+          </li>
+        </ul>
+
+        <div className="mt-6">
+          <h3 className="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-200">
+            Location
+          </h3>
+          {card && <MapView address={card.address} />}
+        </div>
       </div>
     </Card>
   ) : (
