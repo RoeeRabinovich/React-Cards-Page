@@ -109,15 +109,17 @@ const CardEditorTable = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100">
-      <div className="container mx-auto p-4">
+    <main className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="container mx-auto p-4 text-center">
         {loading ? (
           <div className="flex items-center justify-center">
             <Spinner />
           </div>
         ) : (
           <>
-            <h1 className="mb-4 text-2xl font-bold">Card Editor</h1>
+            <h1 className="mb-4 text-2xl font-bold dark:text-white">
+              Card Editor
+            </h1>
             <Table striped>
               <TableHead>
                 <TableRow>

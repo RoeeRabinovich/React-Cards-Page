@@ -10,49 +10,36 @@ import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import FormInput from "./FormInput";
 import { FieldPath, FieldError, FieldErrors } from "react-hook-form";
 
-type NestedKeys<T> = {
-  [K in keyof T & string]: T[K] extends Record<string, unknown>
-    ? K | `${K}.${keyof T[K] & string}`
-    : K;
-}[keyof T & string];
-
-interface CardField {
-  name: string;
-  label: string;
-  type: string;
-}
-
+// Simplified and more reliable error getter
 function getNestedError(
   errors: FieldErrors<TCard>,
-  path: NestedKeys<TCard>,
+  path: FieldPath<TCard>,
 ): FieldError | undefined {
+  // Handle simple paths first
+  if (path in errors) {
+    return errors[path as keyof FieldErrors<TCard>] as FieldError;
+  }
+
+  // Handle nested paths
   const parts = path.split(".");
-  let current: unknown = errors;
+  let current: FieldErrors<TCard> | FieldError | undefined = errors;
 
   for (const part of parts) {
-    if (
-      current &&
-      typeof current === "object" &&
-      part in current &&
-      current !== null
-    ) {
-      current = current[part as keyof typeof current];
+    if (current && typeof current === "object" && part in current) {
+      current = (current as Record<string, FieldError | FieldErrors<TCard>>)[
+        part
+      ];
     } else {
       return undefined;
     }
   }
 
-  return isFieldError(current) ? current : undefined;
-}
+  // Check if current is a FieldError
+  if (current && typeof current === "object" && "message" in current) {
+    return current as FieldError;
+  }
 
-// Type guard for FieldError
-function isFieldError(value: unknown): value is FieldError {
-  return (
-    value !== null &&
-    typeof value === "object" &&
-    "message" in value &&
-    typeof (value as FieldError).message === "string"
-  );
+  return undefined;
 }
 
 interface EditCardProps {
@@ -89,27 +76,43 @@ const EditCard = ({ card, show, onClose }: EditCardProps) => {
       },
     },
     resolver: joiResolver(createCardSchema),
+    mode: "onChange", // Enable real-time validation
   });
 
-  // Type the cardFields array using FieldPath<TCard>
   const cardFields: Array<{
     name: FieldPath<TCard>;
     label: string;
     type: string;
+    required?: boolean;
   }> = [
-    { name: "title", label: "Title", type: "text" },
-    { name: "subtitle", label: "Subtitle", type: "text" },
-    { name: "description", label: "Description", type: "text" },
-    { name: "phone", label: "Phone", type: "tel" },
-    { name: "email", label: "Email", type: "email" },
-    { name: "web", label: "Web", type: "url" },
-    { name: "image.url", label: "Image URL", type: "url" },
-    { name: "image.alt", label: "Image Alt Text", type: "text" },
+    { name: "title", label: "Title", type: "text", required: true },
+    { name: "subtitle", label: "Subtitle", type: "text", required: true },
+    { name: "description", label: "Description", type: "text", required: true },
+    { name: "phone", label: "Phone", type: "tel", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "web", label: "Website", type: "url" },
+    { name: "image.url", label: "Image URL", type: "url", required: true },
+    {
+      name: "image.alt",
+      label: "Image Alt Text",
+      type: "text",
+      required: true,
+    },
     { name: "address.state", label: "State/Province", type: "text" },
-    { name: "address.country", label: "Country", type: "text" },
-    { name: "address.city", label: "City", type: "text" },
-    { name: "address.street", label: "Street Address", type: "text" },
-    { name: "address.houseNumber", label: "House Number", type: "number" },
+    { name: "address.country", label: "Country", type: "text", required: true },
+    { name: "address.city", label: "City", type: "text", required: true },
+    {
+      name: "address.street",
+      label: "Street Address",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "address.houseNumber",
+      label: "House Number",
+      type: "number",
+      required: true,
+    },
     { name: "address.zip", label: "ZIP Code", type: "number" },
   ];
 
@@ -136,33 +139,29 @@ const EditCard = ({ card, show, onClose }: EditCardProps) => {
       toast.error("Failed to update card. Please try again.");
     }
   };
+
   return (
     <Modal show={show} onClose={onClose} size="4xl">
       <ModalHeader>Edit Card</ModalHeader>
       <ModalBody>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            {cardFields.map((field: CardField) => (
-              <div key={field.name}>
-                <FormInput
-                  register={register}
-                  name={field.name as FieldPath<TCard>}
-                  label={field.label}
-                  type={field.type}
-                  error={
-                    getNestedError(errors, field.name as NestedKeys<TCard>)
-                      ? {
-                          message:
-                            getNestedError(
-                              errors,
-                              field.name as NestedKeys<TCard>,
-                            )?.message || "",
-                        }
-                      : null
-                  }
-                />
-              </div>
-            ))}
+            {cardFields.map((field) => {
+              const error = getNestedError(errors, field.name);
+
+              return (
+                <div key={field.name}>
+                  <FormInput
+                    register={register}
+                    name={field.name}
+                    label={field.label}
+                    type={field.type}
+                    required={field.required}
+                    error={error ? { message: error.message || "" } : null}
+                  />
+                </div>
+              );
+            })}
           </div>
           <div className="flex justify-end gap-2">
             <Button color="gray" onClick={onClose}>

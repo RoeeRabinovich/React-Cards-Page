@@ -7,8 +7,10 @@ interface FormInputProps<T extends TRegisterData | TCard> {
   register: UseFormRegister<T>;
   name: FieldPath<T>;
   label: string;
-  error?: null | { message: string };
+  error?: { message: string } | null;
   type?: string;
+  required?: boolean;
+  disabled?: boolean;
 }
 
 const FormInput = <T extends TRegisterData | TCard>({
@@ -17,17 +19,33 @@ const FormInput = <T extends TRegisterData | TCard>({
   label,
   type = "text",
   error,
-}: FormInputProps<T>) => (
-  <div>
-    <FloatingLabel
-      {...register(name)}
-      variant="outlined"
-      label={label}
-      type={type}
-      color={error ? "error" : "success"}
-    />
-    {error && <p className="text-xs text-red-500">{error.message}</p>}
-  </div>
-);
+  required = false,
+  disabled = false,
+}: FormInputProps<T>) => {
+  const { onChange, onBlur, name: fieldName, ref } = register(name);
+
+  return (
+    <div>
+      <FloatingLabel
+        variant="outlined"
+        label={label}
+        type={type}
+        color={error ? "error" : "default"}
+        required={required}
+        disabled={disabled}
+        // Manually pass the registration props
+        onChange={onChange}
+        onBlur={onBlur}
+        name={fieldName}
+        ref={ref}
+      />
+      {error && (
+        <p className="mt-1 text-xs text-red-500" role="alert">
+          {error.message}
+        </p>
+      )}
+    </div>
+  );
+};
 
 export default FormInput;

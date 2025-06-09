@@ -1,14 +1,15 @@
 import axios from "axios";
-import { Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TCard } from "../types/TCard";
+import { IoIosReturnLeft } from "react-icons/io";
 
 export const CardDetails = () => {
   const [card, setCard] = useState<TCard>();
   const [error, setError] = useState<string>();
   const { id } = useParams<{ id: string }>();
-  console.log(id); //You can use this ID to fetch card details from an Api or perform other actions;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCardDetails = async () => {
@@ -27,6 +28,11 @@ export const CardDetails = () => {
 
   return card ? (
     <Card title={card.title} className="m-10">
+      <div className="mt-4 flex justify-start">
+        <Button onClick={() => navigate(-1)}>
+          <IoIosReturnLeft className="text-2xl" /> Back
+        </Button>
+      </div>
       <div className="mx-auto w-xl space-y-6 rounded-2xl bg-white p-6 text-center shadow-lg dark:bg-gray-800">
         <img
           src={card?.image.url}
