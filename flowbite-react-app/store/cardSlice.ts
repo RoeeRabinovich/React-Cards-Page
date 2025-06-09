@@ -15,7 +15,15 @@ const cardSlice = createSlice({
     },
     addCard: (state, action) => {
       state.cards.push(action.payload);
-    }
+    },
+    editCard: (state, action) => {
+      const index = state.cards.findIndex(
+        (card) => card._id === action.payload._id,
+      );
+      if (index !== -1) {
+        state.cards[index] = action.payload;
+      }
+    },
   },
 });
 

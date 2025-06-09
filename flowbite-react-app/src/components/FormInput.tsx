@@ -1,22 +1,23 @@
 import { FloatingLabel } from "flowbite-react";
 import { UseFormRegister, FieldPath } from "react-hook-form";
 import { TRegisterData } from "../types/TRegisterData";
+import { TCard } from "../types/TCard";
 
-interface FormInputProps {
-  register: UseFormRegister<TRegisterData>;
-  name: FieldPath<TRegisterData>;
+interface FormInputProps<T extends TRegisterData | TCard> {
+  register: UseFormRegister<T>;
+  name: FieldPath<T>;
   label: string;
   error?: null | { message: string };
   type?: string;
 }
 
-const FormInput = ({
+const FormInput = <T extends TRegisterData | TCard>({
   register,
   name,
   label,
   type = "text",
   error,
-}: FormInputProps) => (
+}: FormInputProps<T>) => (
   <div>
     <FloatingLabel
       {...register(name)}

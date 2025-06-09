@@ -5,8 +5,29 @@ import axios from "axios";
 import { Button, Checkbox } from "flowbite-react";
 import FormInput from "../components/FormInput";
 import { TRegisterData } from "../types/TRegisterData";
-import { FieldPath } from "react-hook-form";
+import { FieldPath, FieldError, FieldErrors } from "react-hook-form";
 import { toast } from "react-toastify";
+
+function getNestedError(
+  errors: FieldErrors<TRegisterData>,
+  path: string,
+): FieldError | undefined {
+  const parts = path.split(".");
+  let current: unknown = errors;
+
+  for (const part of parts) {
+    if (current && typeof current === "object" && part in current) {
+      current = current[part as keyof typeof current];
+    } else {
+      return undefined;
+    }
+  }
+
+  if (current && typeof current === "object" && "message" in current) {
+    return current as FieldError;
+  }
+  return undefined;
+}
 
 const Register = () => {
   const {
@@ -94,24 +115,21 @@ const Register = () => {
         </h1>
 
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          {registerFields.map((field) => (
-            <FormInput
-              key={field.name}
-              register={register}
-              name={field.name as FieldPath<TRegisterData>}
-              label={field.label}
-              type={field.type}
-              error={
-                errors[field.name as keyof typeof errors]
-                  ? {
-                      message:
-                        (errors[field.name as keyof typeof errors]
-                          ?.message as string) || "",
-                    }
-                  : null
-              }
-            />
-          ))}
+          {registerFields.map((field) => {
+            const error = getNestedError(errors, field.name);
+            return (
+              <FormInput
+                key={field.name}
+                register={register}
+                name={field.name as FieldPath<TRegisterData>}
+                label={field.label}
+                type={field.type}
+                error={
+                  error ? { message: error.message || "Invalid input" } : null
+                }
+              />
+            );
+          })}
         </div>
 
         {/* Checkboxes */}

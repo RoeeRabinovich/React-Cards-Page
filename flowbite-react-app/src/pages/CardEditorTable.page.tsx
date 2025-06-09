@@ -15,11 +15,18 @@ import {
   TableHeadCell,
   TableRow,
 } from "flowbite-react";
+import EditCard from "../components/EditCard";
+import { TCard } from "../types/TCard";
 
 const CardEditorTable = () => {
+  // State management
   const [loading, setLoading] = useState(false);
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const tilesPerPage = 12;
+  // Modal state for editing cards
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<TCard | null>(null);
 
   const dispatch = useDispatch();
   const user = useSelector((state: TRootState) => state.userSlice.user);
@@ -27,9 +34,9 @@ const CardEditorTable = () => {
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
   );
-
+  // Filter cards based on search word
   const filteredBySearch = () => {
-    if (cards) {
+    if (Array.isArray(cards) && cards.length > 0) {
       return cards.filter((card) =>
         card.title.toLowerCase().includes(searchWord.toLowerCase()),
       );
@@ -67,11 +74,11 @@ const CardEditorTable = () => {
   }, [user, cards.length, dispatch]);
   const filteredCards = filteredBySearch();
   const totalPages = Math.ceil(filteredCards.length / tilesPerPage);
-
+  // Calculate the indices for slicing the cards array based on the current page
   const indexOfLastCard = currentPage * tilesPerPage;
   const indexOfFirstCard = indexOfLastCard - tilesPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);
-
+  // Handle card deletion
   const handleDelete = async (cardId: string) => {
     if (window.confirm("Are you sure you want to delete this card?")) {
       try {
@@ -95,6 +102,11 @@ const CardEditorTable = () => {
       }
     }
   };
+  // Handle card editing
+  const handleEdit = (card: TCard) => {
+    setSelectedCard(card);
+    setShowEditModal(true);
+  };
 
   return (
     <main className="min-h-screen bg-gray-100">
@@ -108,10 +120,12 @@ const CardEditorTable = () => {
             <h1 className="mb-4 text-2xl font-bold">Card Editor</h1>
             <Table striped>
               <TableHead>
-                <TableHeadCell>Title</TableHeadCell>
-                <TableHeadCell>Email</TableHeadCell>
-                <TableHeadCell>Phone</TableHeadCell>
-                <TableHeadCell>Actions</TableHeadCell>
+                <TableRow>
+                  <TableHeadCell>Title</TableHeadCell>
+                  <TableHeadCell>Email</TableHeadCell>
+                  <TableHeadCell>Phone</TableHeadCell>
+                  <TableHeadCell>Actions</TableHeadCell>
+                </TableRow>
               </TableHead>
               <TableBody>
                 {currentCards.map((card) => (
@@ -126,11 +140,16 @@ const CardEditorTable = () => {
                     <TableCell>{card.phone}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Button className="font-medium text-blue-600 hover:underline dark:text-blue-500">
+                        <Button
+                          className="cursor-pointer bg-blue-500 text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          size="sm"
+                          onClick={() => handleEdit(card)}
+                        >
                           Edit
                         </Button>
                         <Button
-                          className="font-medium text-red-600 hover:underline dark:text-red-500"
+                          className="cursor-pointer bg-red-500 text-white hover:bg-red-600 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                          size="sm"
                           onClick={() => handleDelete(card._id)}
                         >
                           Remove
@@ -153,6 +172,16 @@ const CardEditorTable = () => {
             showIcons
           />
         </div>
+      )}
+      {selectedCard && (
+        <EditCard
+          card={selectedCard}
+          show={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedCard(null);
+          }}
+        />
       )}
     </main>
   );
