@@ -145,19 +145,23 @@ function MyCard() {
                   <br />
                   {`${card.address.street} ${card.address.houseNumber}, ${card.address.city}`}
                 </p>
-                <Button
-                  className={"cursor-pointer"}
-                  onClick={() => nav("/card/" + card._id)}
-                >
-                  Read More.
-                </Button>
-                {user && (
-                  <FaHeart
-                    className={`${isLiked ? "text-red-500" : "text-black"}`}
-                    cursor={"pointer"}
-                    onClick={() => LikeOrUnlikeCard(card._id)}
-                  />
-                )}
+                <div className="relative mt-4 flex items-center justify-center">
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => nav("/card/" + card._id)}
+                  >
+                    Read More.
+                  </Button>
+                  {user && (
+                    <FaHeart
+                      className={`${
+                        isLiked ? "text-red-500" : "text-black"
+                      } absolute right-0 text-2xl`}
+                      cursor={"pointer"}
+                      onClick={() => LikeOrUnlikeCard(card._id)}
+                    />
+                  )}
+                </div>
               </Card>
             );
           })

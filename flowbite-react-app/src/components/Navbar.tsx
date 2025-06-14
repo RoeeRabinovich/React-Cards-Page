@@ -22,7 +22,7 @@ export function MyNavbar() {
       <Navbar
         fluid
         rounded
-        className="border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-800"
+        className="border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900"
       >
         <NavbarBrand href={"/home"}>
           <img
@@ -31,7 +31,7 @@ export function MyNavbar() {
             alt="Random picture"
           />
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-            Roee's React Cards
+            R-Cards
           </span>
         </NavbarBrand>
         <NavbarToggle />

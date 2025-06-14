@@ -117,9 +117,12 @@ const CreateCard = () => {
         className="flex w-full max-w-4xl flex-col items-center justify-center rounded-2xl bg-white p-4 shadow-xl sm:p-6 md:p-8 dark:bg-gray-900"
         onSubmit={handleSubmit(submitForm)}
       >
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800 sm:text-3xl md:text-4xl dark:text-white">
+        <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">
           Create Business Card
         </h1>
+        <p className="my-2 mb-4 text-sm text-gray-500 dark:text-gray-400">
+          Fields marked with * are required.
+        </p>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
           {cardFields.map((field) => {
             const error = getNestedError(errors, field.name);
@@ -128,7 +131,7 @@ const CreateCard = () => {
                 <FloatingLabel
                   {...register(field.name as FieldPath<TCard>)}
                   type={field.type}
-                  color={error ? "error" : "success"}
+                  color={error ? "error" : "default"}
                   variant="outlined"
                   label={`${field.label}${field.required ? " *" : ""}`}
                   placeholder={field.label}
@@ -146,9 +149,16 @@ const CreateCard = () => {
         <Button
           type="submit"
           disabled={!isValid}
-          className="mt-6 w-full rounded-lg bg-blue-600 px-6 py-2.5 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          className="mt-6 w-full rounded-lg bg-blue-600 px-8 py-3 font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
         >
           Create Card
+        </Button>
+        <Button
+          type="button"
+          onClick={() => reset()}
+          className="mt-4 w-full rounded-lg bg-gray-300 px-8 py-3 font-medium hover:bg-gray-400 focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          Reset Form
         </Button>
       </form>
     </div>

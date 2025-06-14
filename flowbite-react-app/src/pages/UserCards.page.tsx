@@ -42,8 +42,10 @@ const UserCards = () => {
     setShowEditModal(true);
   };
   return (
-    <div className="flex flex-col items-center justify-center gap-2 dark:bg-gray-900">
-      <h1 className="text-2xl dark:text-white">My Cards</h1>
+    <div className="flex flex-col items-center justify-center gap-10 p-5 dark:bg-gray-800">
+      <h1 className="mb-4 text-center text-3xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">
+        My Cards
+      </h1>
 
       <div className="flex w-full flex-wrap justify-center gap-3">
         {cards &&
@@ -53,7 +55,7 @@ const UserCards = () => {
               className="lg:w-m flex w-full justify-center sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
             >
               <Card
-                className="w-96 cursor-pointer dark:bg-gray-800"
+                className="w-96 cursor-pointer dark:bg-gray-900"
                 imgAlt="Random image"
               >
                 <img

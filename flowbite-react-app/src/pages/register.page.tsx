@@ -110,9 +110,12 @@ const Register = () => {
         className="flex w-full max-w-4xl flex-col gap-6 rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900"
         onSubmit={handleSubmit(submitForm)}
       >
-        <h1 className="mb-8 text-center text-4xl font-bold text-gray-800 dark:text-white">
+        <h1 className="mb-2 text-center text-4xl font-bold text-gray-800 dark:text-white">
           Register
         </h1>
+        <p className="text-center text-gray-600 dark:text-gray-400">
+          Fields marked with * are required.
+        </p>
 
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           {registerFields.map((field) => {
@@ -158,11 +161,15 @@ const Register = () => {
         <Button
           type="submit"
           disabled={!isValid}
-          className="mt-6 w-full rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          className="mt-6 w-full rounded-lg bg-blue-600 px-6 py-2.5 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
         >
           Submit
         </Button>
-        <Button type="button" onClick={() => reset()}>
+        <Button
+          type="button"
+          onClick={() => reset()}
+          className="w-full bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600"
+        >
           Reset Form.
         </Button>
       </form>

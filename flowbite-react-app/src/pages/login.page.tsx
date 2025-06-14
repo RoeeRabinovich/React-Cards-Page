@@ -86,17 +86,23 @@ const Login = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gray-900">
-      <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-        Login to your account
-      </h1>
-      <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-4">
+    <main className="flex flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gray-800">
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-white p-6 text-center shadow-md dark:bg-gray-900"
+      >
+        <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
+          Login to your account
+        </h1>
+        <p className="text-center text-gray-600 dark:text-gray-400">
+          Please enter your email and password to login.
+        </p>
         <FloatingLabel
           {...register("email")}
           variant="outlined"
           label="Email address"
           type="email"
-          color={errors.email ? "error" : "success"}
+          color={errors.email ? "error" : "default"}
         />
         {errors.email && (
           <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -107,7 +113,7 @@ const Login = () => {
           variant="outlined"
           label="Password"
           type="password"
-          color={errors.password ? "error" : "success"}
+          color={errors.password ? "error" : "default"}
         />
         {errors.password && (
           <p className="text-sm text-red-500">{errors.password.message}</p>
