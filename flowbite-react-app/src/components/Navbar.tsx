@@ -26,7 +26,7 @@ export function MyNavbar() {
       >
         <NavbarBrand href={"/home"}>
           <img
-            src="https://picsum.photos/150"
+            src="../../public/letter-r-svgrepo-com.svg"
             className="mr-3 h-6 rounded-full sm:h-9"
             alt="Random picture"
           />
@@ -70,6 +70,11 @@ export function MyNavbar() {
           {user && user.isBusiness && (
             <Link to={"/create-card"} className="text-lg">
               Create Card
+            </Link>
+          )}
+          {user && user.isBusiness && (
+            <Link to={"/my-cards"} className="text-lg">
+              My Cards
             </Link>
           )}
           {user && user.isBusiness && (

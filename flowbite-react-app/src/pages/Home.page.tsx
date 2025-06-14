@@ -1,23 +1,26 @@
 import MyCard from "../components/Card";
-import { MyFooter } from "../components/Footer";
 
 const Home = () => {
   return (
-    <main>
-      <div className="p-3 text-center">
-        <h1 className="dark:text-gray my-4 text-6xl dark:text-white">
-          Cards Page
-        </h1>
-        <h2 className="font-normal text-gray-700 dark:text-gray-400">
-          Here you can find buisness cards from all catergories.
-        </h2>
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="p-3 text-center">
+          <h1 className="my-4 text-4xl sm:text-5xl md:text-6xl dark:text-white">
+            Cards Page
+          </h1>
+          <h2 className="mx-auto max-w-2xl text-base font-normal text-gray-700 sm:text-lg md:text-xl dark:text-gray-400">
+            Here you can find business cards from all categories.
+          </h2>
+        </div>
+
+        <hr className="mx-auto my-8 max-w-4xl border-gray-200 dark:border-gray-700" />
+
+        <div className="grid grid-cols-1 gap-4 p-5">
+          <MyCard />
+        </div>
       </div>
-      <hr className="w-2xl justify-self-center text-gray-400" />
-      <div className="flex flex-wrap justify-center gap-3 p-5">
-        <MyCard />
-      </div>
-      <MyFooter />
     </main>
   );
 };
+
 export default Home;

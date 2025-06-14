@@ -76,45 +76,66 @@ const CreateCard = () => {
     }
   };
   const cardFields = [
-    { name: "title", label: "Title", type: "text" },
-    { name: "subtitle", label: "Subtitle", type: "text" },
-    { name: "description", label: "Description", type: "text" },
-    { name: "phone", label: "Phone", type: "tel" },
-    { name: "email", label: "Email", type: "email" },
-    { name: "web", label: "Web", type: "url" },
-    { name: "image.url", label: "Image URL", type: "url" },
-    { name: "image.alt", label: "Image Alt Text", type: "text" },
-    { name: "address.state", label: "State/Province", type: "text" },
-    { name: "address.country", label: "Country", type: "text" },
-    { name: "address.city", label: "City", type: "text" },
-    { name: "address.street", label: "Street Address", type: "text" },
-    { name: "address.houseNumber", label: "House Number", type: "number" },
-    { name: "address.zip", label: "ZIP Code", type: "number" },
+    { name: "title", label: "Title", type: "text", required: true },
+    { name: "subtitle", label: "Subtitle", type: "text", required: false },
+    { name: "description", label: "Description", type: "text", required: true },
+    { name: "phone", label: "Phone", type: "tel", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "web", label: "Web", type: "url", required: false },
+    { name: "image.url", label: "Image URL", type: "url", required: true },
+    {
+      name: "image.alt",
+      label: "Image Alt Text",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "address.state",
+      label: "State/Province",
+      type: "text",
+      required: true,
+    },
+    { name: "address.country", label: "Country", type: "text", required: true },
+    { name: "address.city", label: "City", type: "text", required: true },
+    {
+      name: "address.street",
+      label: "Street Address",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "address.houseNumber",
+      label: "House Number",
+      type: "number",
+      required: true,
+    },
+    { name: "address.zip", label: "ZIP Code", type: "number", required: true },
   ];
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-8 dark:bg-gray-800">
       <form
-        className="flex w-full max-w-4xl flex-col items-center justify-center rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-900"
+        className="flex w-full max-w-4xl flex-col items-center justify-center rounded-2xl bg-white p-4 shadow-xl sm:p-6 md:p-8 dark:bg-gray-900"
         onSubmit={handleSubmit(submitForm)}
       >
-        <h1 className="mb-8 text-center text-4xl font-bold text-gray-800 dark:text-white">
+        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800 sm:text-3xl md:text-4xl dark:text-white">
           Create Business Card
         </h1>
-        <div className="grid w-full grid-cols-2 grid-rows-7 gap-6">
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
           {cardFields.map((field) => {
             const error = getNestedError(errors, field.name);
             return (
-              <div key={field.name}>
+              <div key={field.name} className="relative">
                 <FloatingLabel
                   {...register(field.name as FieldPath<TCard>)}
                   type={field.type}
                   color={error ? "error" : "success"}
                   variant="outlined"
-                  label={field.label}
+                  label={`${field.label}${field.required ? " *" : ""}`}
                   placeholder={field.label}
+                  required={field.required}
                 />
                 {error && (
-                  <div className="text-xs text-red-500">
+                  <div className="mt-1 text-xs text-red-500">
                     {(error as FieldError)?.message}
                   </div>
                 )}
@@ -125,7 +146,7 @@ const CreateCard = () => {
         <Button
           type="submit"
           disabled={!isValid}
-          className="mt-6 w-sm rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+          className="mt-6 w-full rounded-lg bg-blue-600 px-6 py-2.5 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
         >
           Create Card
         </Button>
@@ -133,4 +154,5 @@ const CreateCard = () => {
     </div>
   );
 };
+
 export default CreateCard;

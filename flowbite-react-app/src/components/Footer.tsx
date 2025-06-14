@@ -2,33 +2,33 @@ import {
   Footer,
   FooterCopyright,
   FooterDivider,
-  FooterLink,
   FooterLinkGroup,
 } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { TRootState } from "../../store/store";
+import { Link } from "react-router";
 
 export function MyFooter() {
   const user = useSelector((state: TRootState) => state.userSlice.user);
 
   return (
-    <Footer container className="rounded-none">
+    <Footer container className="mt-4 rounded-none">
       <div className="w-full text-center">
         <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
-          <FooterLinkGroup>
-            <FooterLink href="/about">About</FooterLink>
+          <FooterLinkGroup className="mb-6 gap-5 sm:mb-0">
+            <Link to="/home">Home</Link>
+            <Link to="/about">About</Link>
             {user ? (
               <>
-                <FooterLink href="/home">Home</FooterLink>
-                <FooterLink href="/create-card">Create Card</FooterLink>
-                <FooterLink href="/card-editor">My Cards</FooterLink>
-                <FooterLink href="/favourites">Favorites</FooterLink>
-                <FooterLink href="/profile">Profile</FooterLink>
+                <Link to="/create-card">Create Card</Link>
+                <Link to="/card-editor">My Cards</Link>
+                <Link to="/favourites">Favorites</Link>
+                <Link to="/profile">Profile</Link>
               </>
             ) : (
               <>
-                <FooterLink href="/login">Login</FooterLink>
-                <FooterLink href="/register">Register</FooterLink>
+                <Link to="/login">Login</Link>
+                <Link to="/register">Register</Link>
               </>
             )}
           </FooterLinkGroup>

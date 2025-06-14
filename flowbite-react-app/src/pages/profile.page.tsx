@@ -10,11 +10,11 @@ const Profile = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-2 pt-5 dark:bg-gray-900">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-2 pt-5 dark:bg-gray-800">
       <h1 className="text-2xl dark:text-white">Profile Page</h1>
       <p className="text-lg dark:text-white">Welcome {user?.name.first}</p>
 
-      <div className="mx-auto w-xl space-y-6 rounded-2xl bg-white p-6 text-center shadow-lg dark:bg-gray-800">
+      <div className="mx-auto w-xl space-y-6 rounded-2xl bg-white p-6 text-center shadow-lg dark:bg-gray-900">
         <Button onClick={() => navigate(-1)}>
           <IoIosReturnLeft className="text-2xl" /> Back
         </Button>

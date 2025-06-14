@@ -114,7 +114,7 @@ function MyCard() {
     <div>
       <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {loading ? (
-          <div className="flex items-center justify-center">
+          <div className="col-span-full flex items-center justify-center">
             <Spinner />
           </div>
         ) : (
@@ -123,7 +123,7 @@ function MyCard() {
             return (
               <Card
                 key={card._id}
-                className="max-h-150 max-w-lg"
+                className="max-h-150 max-w-lg bg-white p-6 shadow-lg dark:bg-gray-900"
                 imgAlt="Random image"
               >
                 <img
@@ -163,15 +163,27 @@ function MyCard() {
           })
         )}
       </div>
-      {/* Flowbite Pagination */}
+
+      {/* Responsive Pagination */}
       {totalPages > 1 && (
-        <div className="my-6 flex justify-center">
+        <div className="mx-auto mt-8 flex max-w-screen-xl flex-col items-center justify-center space-y-4">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
             showIcons
+            layout="pagination"
+            className="inline-flex items-center justify-center gap-1 text-sm"
+            previousLabel=""
+            nextLabel=""
           />
+
+          <div className="text-center text-sm text-gray-700 dark:text-gray-400">
+            <span className="hidden sm:inline">Showing </span>
+            {indexOfFirstCard + 1} -{" "}
+            {Math.min(indexOfLastCard, filteredCards.length)} of{" "}
+            {filteredCards.length}
+          </div>
         </div>
       )}
     </div>

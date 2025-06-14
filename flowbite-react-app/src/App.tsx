@@ -15,6 +15,8 @@ import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import CreateCard from "./components/CreateCard";
 import CardEditor from "./pages/CardEditorTable.page";
+import { MyFooter } from "./components/Footer";
+import UserCards from "./pages/UserCards.page";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -72,6 +74,14 @@ export default function App() {
           }
         />
         <Route
+          path="/my-cards"
+          element={
+            <RouteGuard>
+              <UserCards />
+            </RouteGuard>
+          }
+        />
+        <Route
           path="/card-editor"
           element={
             <RouteGuard>
@@ -82,6 +92,7 @@ export default function App() {
 
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
+      <MyFooter />
     </div>
   );
 }
