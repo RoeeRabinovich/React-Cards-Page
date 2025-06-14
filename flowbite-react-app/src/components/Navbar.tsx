@@ -35,55 +35,83 @@ export function MyNavbar() {
           </span>
         </NavbarBrand>
         <NavbarToggle />
-        <NavbarBrand>
+        <NavbarBrand className="flex-1 sm:flex-none">
           <TextInput
             placeholder="Search Cards"
             rightIcon={IoIosSearch}
             onChange={(e) =>
               dispatch(searchAction.setSearchWord(e.target.value))
             }
+            className="min-w-[200px] sm:w-[300px] md:w-[400px]"
           />
         </NavbarBrand>
-        <NavbarCollapse className="dark:text-white">
-          <Link to={"/home"} className="text-lg">
+        <NavbarCollapse className="md:text-lg md:font-normal dark:text-white">
+          <Link
+            to={"/home"}
+            className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+          >
             Home
           </Link>
-          <Link to={"/about"} className="text-lg">
+          <Link
+            to={"/about"}
+            className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+          >
             About
           </Link>
           {!user && (
-            <Link to={"/register"} className="text-lg">
+            <Link
+              to={"/register"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Register
             </Link>
           )}
           {!user && (
-            <Link to={"/login"} className="text-lg">
+            <Link
+              to={"/login"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Login
             </Link>
           )}
 
           {user && (
-            <Link to={"/profile"} className="text-lg">
+            <Link
+              to={"/profile"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Profile
             </Link>
           )}
           {user && user.isBusiness && (
-            <Link to={"/create-card"} className="text-lg">
+            <Link
+              to={"/create-card"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Create Card
             </Link>
           )}
           {user && user.isBusiness && (
-            <Link to={"/my-cards"} className="text-lg">
+            <Link
+              to={"/my-cards"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               My Cards
             </Link>
           )}
           {user && user.isBusiness && (
-            <Link to={"/favourites"} className="text-lg">
+            <Link
+              to={"/favourites"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Favourites
             </Link>
           )}
           {user && user.isAdmin && (
-            <Link to={"/card-editor"} className="text-lg">
+            <Link
+              to={"/card-editor"}
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
+            >
               Edit
             </Link>
           )}
@@ -91,7 +119,7 @@ export function MyNavbar() {
             <Link
               to={"/home"}
               onClick={() => dispatch(userActions.logout())}
-              className="text-lg"
+              className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
             >
               Logout
             </Link>

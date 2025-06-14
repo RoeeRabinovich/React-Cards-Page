@@ -68,7 +68,7 @@ const About = () => {
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-900">
               <h3 className="mb-3 text-xl font-semibold text-gray-800 dark:text-white">
-                CRM for Admins 📊
+                Content Management 📊
               </h3>
               <p className="text-gray-600 dark:text-gray-300">
                 Our comprehensive CRM features enable admins to manage business

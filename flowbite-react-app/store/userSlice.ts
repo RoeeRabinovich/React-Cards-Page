@@ -35,6 +35,7 @@ export type TUser = {
 //this is the initial state of the user slice
 const initialState = {
   user: null as TUser | null,
+  editUser: [] as TUser[], // Changed to empty array instead of null
 };
 
 // this is the user slice of the redux store
@@ -43,13 +44,22 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    //actions to update the state
     login: (state, data) => {
       state.user = data.payload;
     },
     logout: (state) => {
       state.user = null;
       localStorage.removeItem("user");
+    },
+    editUser: (state, action) => {
+      const index = state.editUser.findIndex(
+        (user) => user._id === action.payload._id,
+      );
+      if (index !== -1) {
+        state.editUser[index] = action.payload;
+      } else {
+        state.editUser.push(action.payload);
+      }
     },
   },
 });
