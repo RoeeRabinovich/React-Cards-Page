@@ -136,7 +136,16 @@ const EditCard = ({ card, show, onClose }: EditCardProps) => {
       onClose();
     } catch (error) {
       console.error("Error updating card:", error);
-      toast.error("Failed to update card. Please try again.");
+      toast.error("Failed to update card. Please try again.", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 

@@ -1,7 +1,7 @@
 import { MyNavbar } from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/login.page";
-import About from "./pages/about.page";
+import About from "./pages/About.page";
 import ErrorPage from "./pages/ErrorPage.page";
 import Home from "./pages/Home.page";
 import Register from "./pages/Register.page";
@@ -14,7 +14,7 @@ import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import CreateCard from "./components/CreateCard";
-import CardEditor from "./pages/CardEditorTable.page";
+import CardEditor from "./pages/ContentEditorTable.page";
 import { MyFooter } from "./components/Footer";
 import UserCards from "./pages/UserCards.page";
 

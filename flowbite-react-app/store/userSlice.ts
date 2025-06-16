@@ -30,12 +30,13 @@ export type TUser = {
       email?: string;
     } | null;
   };
+  password?: string; // Optional field for password
 };
 
 //this is the initial state of the user slice
 const initialState = {
   user: null as TUser | null,
-  editUser: [] as TUser[], // Changed to empty array instead of null
+  editUser: [] as TUser[], // Initialize as empty array
 };
 
 // this is the user slice of the redux store
@@ -44,6 +45,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    storeUser: (state, action) => {
+      state.user = action.payload;
+    },
     login: (state, data) => {
       state.user = data.payload;
     },
@@ -52,12 +56,25 @@ const userSlice = createSlice({
       localStorage.removeItem("user");
     },
     editUser: (state, action) => {
+      // Check if editUser array exists
+      if (!state.editUser) {
+        state.editUser = [];
+      }
+
+      // Find the user index
       const index = state.editUser.findIndex(
         (user) => user._id === action.payload._id,
       );
+
+      // Update existing user or add new one
       if (index !== -1) {
-        state.editUser[index] = action.payload;
+        // Update existing user
+        state.editUser[index] = {
+          ...state.editUser[index],
+          ...action.payload,
+        };
       } else {
+        // Add new user
         state.editUser.push(action.payload);
       }
     },

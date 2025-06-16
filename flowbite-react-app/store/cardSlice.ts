@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TCard } from "../src/types/TCard";
 
 const cardSlice = createSlice({
-  name: "cardSlice",
+  name: "card",
   initialState: {
     cards: [] as TCard[],
   },
@@ -27,5 +27,5 @@ const cardSlice = createSlice({
   },
 });
 
-export const { storeCards, removeCard, addCard } = cardSlice.actions;
+export const { storeCards, removeCard, addCard, editCard } = cardSlice.actions;
 export default cardSlice.reducer;

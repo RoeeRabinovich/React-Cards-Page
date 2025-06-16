@@ -8,24 +8,34 @@ import { Button, Pagination, Spinner, Table } from "flowbite-react";
 import EditCard from "../components/EditCard";
 import { TCard } from "../types/TCard";
 
-const CardEditorTable = () => {
+const ContentEditorTable = () => {
+  // State management
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState<TCard | null>(null);
-  const tilesPerPage = 10;
-  const indexOfLastCard = currentPage * tilesPerPage;
-  const indexOfFirstCard = indexOfLastCard - tilesPerPage;
+
+  // Redux hooks
   const dispatch = useDispatch();
   const user = useSelector((state: TRootState) => state.userSlice.user);
-  const cards = useSelector((state: TRootState) => state.cardSlice.cards);
+  const cards = useSelector((state: TRootState) => state.cardSlice.cards ?? []);
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
   );
 
-  const filteredCards = cards.filter((card) =>
-    card.title.toLowerCase().includes(searchWord.toLowerCase()),
-  );
+  // Calculate indices for pagination
+  const tilesPerPage = 10;
+  const indexOfLastCard = currentPage * tilesPerPage;
+  const indexOfFirstCard = indexOfLastCard - tilesPerPage;
+
+  // Filter and paginate cards safely
+  // Ensure cards is an array before filtering
+  const filteredCards = Array.isArray(cards)
+    ? cards.filter((card) =>
+        card.title.toLowerCase().includes(searchWord.toLowerCase()),
+      )
+    : [];
+
   const totalPages = Math.ceil(filteredCards.length / tilesPerPage);
   const currentCards = filteredCards.slice(
     (currentPage - 1) * tilesPerPage,
@@ -51,7 +61,7 @@ const CardEditorTable = () => {
     };
     fetchCards();
   }, [user, cards.length, dispatch]);
-
+  // Handle card deletion
   const handleDelete = async (cardId: string) => {
     if (!window.confirm("Delete this card?")) return;
     try {
@@ -82,6 +92,7 @@ const CardEditorTable = () => {
         <h2 className="text-center font-normal text-gray-700 sm:text-lg md:text-xl dark:text-gray-400">
           Here you can edit and delete cards and users.
         </h2>
+
         <hr className="mx-auto my-8 max-w-4xl border-gray-200 dark:border-gray-700" />
 
         <div className="overflow-x-auto rounded-lg shadow-md">
@@ -180,4 +191,4 @@ const CardEditorTable = () => {
   );
 };
 
-export default CardEditorTable;
+export default ContentEditorTable;
