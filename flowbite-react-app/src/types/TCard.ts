@@ -3,7 +3,7 @@ export type TCard = {
   title: string;
   subtitle: string;
   description: string;
-  phone: number;
+  phone: string;
   email: string;
   web: string;
   image: {

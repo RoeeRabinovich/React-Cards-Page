@@ -24,7 +24,7 @@ const UsersTable = () => {
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
   );
-
+  // Filter users based on the search word
   const filteredUsers = users.filter(
     (user: TUser) =>
       user &&
@@ -32,9 +32,10 @@ const UsersTable = () => {
       user.name.first &&
       user.name.first.toLowerCase().includes(searchWord.toLowerCase()),
   );
+  // Calculate total pages based on filtered users
   const totalPages = Math.ceil(filteredUsers.length / tilesPerPage);
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-
+  // Fetch users from the API when the component mounts
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
@@ -52,7 +53,7 @@ const UsersTable = () => {
     };
     fetchUsers();
   }, [dispatch]);
-
+  // Handle user deletion
   const handleDelete = async (userId: string) => {
     if (!window.confirm("Delete this user?")) return;
     try {

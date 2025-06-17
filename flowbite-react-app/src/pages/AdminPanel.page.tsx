@@ -3,7 +3,8 @@ import EditMode from "../components/EditMode";
 import CardsTable from "../components/CardsTable";
 import UsersTable from "../components/UsersTable";
 
-const ContentEditorTable = () => {
+// This page allows content editors to manage cards and users
+const AdminPanel = () => {
   const [mode, setMode] = useState<"users" | "cards">("cards");
 
   return (
@@ -23,4 +24,4 @@ const ContentEditorTable = () => {
   );
 };
 
-export default ContentEditorTable;
+export default AdminPanel;

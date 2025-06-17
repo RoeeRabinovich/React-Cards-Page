@@ -109,10 +109,10 @@ export function MyNavbar() {
           )}
           {user && user.isAdmin && (
             <Link
-              to={"/card-editor"}
+              to={"/admin-panel"}
               className="rounded-md px-2 py-1 text-xl font-semibold transition-colors hover:text-blue-600 focus:text-blue-600 focus:outline-none md:text-lg md:font-normal dark:hover:text-blue-400 dark:focus:text-blue-400"
             >
-              Edit
+              Admin Panel
             </Link>
           )}
           {user && (

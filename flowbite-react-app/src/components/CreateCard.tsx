@@ -41,7 +41,7 @@ const CreateCard = () => {
       title: "",
       subtitle: "",
       description: "",
-      phone: 0,
+      phone: "",
       email: "",
       web: "",
       image: {
@@ -53,8 +53,8 @@ const CreateCard = () => {
         country: "",
         city: "",
         street: "",
-        houseNumber: 0,
-        zip: 0,
+        houseNumber: undefined,
+        zip: undefined,
       },
     },
     mode: "onChange",
@@ -77,7 +77,7 @@ const CreateCard = () => {
   };
   const cardFields = [
     { name: "title", label: "Title", type: "text", required: true },
-    { name: "subtitle", label: "Subtitle", type: "text", required: false },
+    { name: "subtitle", label: "Subtitle", type: "text", required: true },
     { name: "description", label: "Description", type: "text", required: true },
     { name: "phone", label: "Phone", type: "tel", required: true },
     { name: "email", label: "Email", type: "email", required: true },
@@ -87,13 +87,13 @@ const CreateCard = () => {
       name: "image.alt",
       label: "Image Alt Text",
       type: "text",
-      required: true,
+      required: false,
     },
     {
       name: "address.state",
       label: "State/Province",
       type: "text",
-      required: true,
+      required: false,
     },
     { name: "address.country", label: "Country", type: "text", required: true },
     { name: "address.city", label: "City", type: "text", required: true },
@@ -109,7 +109,7 @@ const CreateCard = () => {
       type: "number",
       required: true,
     },
-    { name: "address.zip", label: "ZIP Code", type: "number", required: true },
+    { name: "address.zip", label: "ZIP Code", type: "number", required: false },
   ];
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-8 dark:bg-gray-800">

@@ -14,7 +14,7 @@ import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 import CreateCard from "./components/CreateCard";
-import CardEditor from "./pages/ContentEditorTable.page";
+import AdminPanel from "./pages/AdminPanel.page";
 import { MyFooter } from "./components/Footer";
 import UserCards from "./pages/UserCards.page";
 
@@ -82,10 +82,10 @@ export default function App() {
           }
         />
         <Route
-          path="/card-editor"
+          path="/admin-panel"
           element={
             <RouteGuard>
-              <CardEditor />
+              <AdminPanel />
             </RouteGuard>
           }
         />
