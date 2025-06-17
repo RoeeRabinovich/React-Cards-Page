@@ -1,7 +1,7 @@
 import { useState } from "react";
-import EditMode from "../components/EditMode";
-import CardsTable from "../components/CardsTable";
-import UsersTable from "../components/UsersTable";
+import EditMode from "../../components/EditMode/EditMode";
+import CardsTable from "../../components/CardsTable/CardsTable";
+import UsersTable from "../../components/UsersTable/UsersTable";
 
 // This page allows content editors to manage cards and users
 const AdminPanel = () => {

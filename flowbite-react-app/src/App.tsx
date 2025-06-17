@@ -1,22 +1,22 @@
-import { MyNavbar } from "./components/Navbar";
+import { MyNavbar } from "./components/Navbar/Navbar";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/login.page";
-import About from "./pages/About.page";
-import ErrorPage from "./pages/ErrorPage.page";
-import Home from "./pages/Home.page";
-import Register from "./pages/Register.page";
-import Profile from "./pages/Profile.page";
-import { CardDetails } from "./pages/CardDetails";
-import RouteGuard from "./components/RouteGuard";
-import Favourites from "./pages/Favourites.page";
+import Login from "./pages/Login/login.page";
+import About from "./pages/About/About.page";
+import ErrorPage from "./pages/ErrorPage/ErrorPage.page";
+import Home from "./pages/Home/Home.page";
+import Register from "./pages/Register/Register.page";
+import Profile from "./pages/Profile/Profile.page";
+import { CardDetails } from "./pages/CardDetails/CardDetails";
+import RouteGuard from "./components/RouteGuard/RouteGuard";
+import Favourites from "./pages/Favourites/Favourites.page";
 import { useEffect } from "react";
 import axios from "axios";
 import { userActions } from "../store/userSlice";
 import { useDispatch } from "react-redux";
-import CreateCard from "./components/CreateCard";
-import AdminPanel from "./pages/AdminPanel.page";
-import { MyFooter } from "./components/Footer";
-import UserCards from "./pages/UserCards.page";
+import CreateCard from "./components/CreateCard/CreateCard";
+import AdminPanel from "./pages/AdminPanel/AdminPanel.page";
+import { MyFooter } from "./components/Footer/Footer";
+import UserCards from "./pages/UserCards/UserCards.page";
 
 export default function App() {
   const dispatch = useDispatch();

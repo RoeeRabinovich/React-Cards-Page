@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { TRootState } from "../../store/store";
-import MapView from "../components/MapView";
+import { TRootState } from "../../../store/store";
+import MapView from "../../components/MapView/MapView";
 import { Button } from "flowbite-react";
 import { IoIosReturnLeft } from "react-icons/io";
 import { useNavigate } from "react-router";

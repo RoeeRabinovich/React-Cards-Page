@@ -1,11 +1,11 @@
 import { Button, Card, Pagination, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { TCard } from "../types/TCard";
+import { TCard } from "../../types/TCard";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { TRootState } from "../../store/store";
-import { storeCards } from "../../store/cardSlice";
+import { TRootState } from "../../../store/store";
+import { storeCards } from "../../../store/cardSlice";
 import { toast } from "react-toastify";
 import { FaHeart } from "react-icons/fa";
 

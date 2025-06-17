@@ -1,14 +1,14 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
-import { loginSchema } from "../validations/login.joi";
+import { loginSchema } from "../../validations/login.joi";
 import axios from "axios";
 import { Button, FloatingLabel } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { userActions } from "../../store/userSlice";
+import { userActions } from "../../../store/userSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { TUser } from "../../store/userSlice";
+import { TUser } from "../../../store/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();

@@ -1,13 +1,13 @@
 import { joiResolver } from "@hookform/resolvers/joi";
-import { TCard } from "../types/TCard";
-import createCardSchema from "../validations/createCard.joi";
+import { TCard } from "../../types/TCard";
+import createCardSchema from "../../validations/createCard.joi";
 import axios from "axios";
-import { storeCards } from "../../store/cardSlice";
+import { storeCards } from "../../../store/cardSlice";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
-import FormInput from "./FormInput";
+import FormInput from "../FormInput/FormInput";
 import { FieldPath, FieldError, FieldErrors } from "react-hook-form";
 
 // Simplified and more reliable error getter

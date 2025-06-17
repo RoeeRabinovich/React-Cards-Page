@@ -1,55 +1,76 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { TCard } from "../types/TCard";
 import { Button, Card, Spinner } from "flowbite-react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EditCard from "../components/EditCard";
-
-const UserCards = () => {
-  // Modal state for editing cards
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<TCard | null>(null);
+import { TRootState } from "../../../store/store";
+import { TCard } from "../../types/TCard";
+const Favourites = () => {
   const [cards, setCards] = useState<TCard[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigate();
+  const searchWord = useSelector(
+    (state: TRootState) => state.searchSlice.searchWord,
+  );
+  const user = useSelector((state: TRootState) => state.userSlice.user);
+
+  const handleRemove = async (cardId: string) => {
+    try {
+      setLoading(true);
+      // Send a PATCH request to toggle like (remove from favourites)
+      await axios.patch(
+        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+      );
+      // Remove the card from local state
+      setCards((prev) => prev.filter((card) => card._id !== cardId));
+    } catch (error) {
+      console.error("Error removing card from favourites:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredBySearch = () => {
+    if (cards) {
+      return cards.filter((card) =>
+        card.title.toLowerCase().includes(searchWord.toLowerCase()),
+      );
+    }
+    return cards;
+  };
 
   useEffect(() => {
-    const getCards = async () => {
-      const token = localStorage.getItem("token");
+    const fetchCards = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
-          "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/my-cards",
-          {
-            headers: {
-              "x-auth-token": token,
-            },
-          },
+          "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
         );
-        setCards(response.data);
+
+        const likedCards = response.data.filter((item: TCard) => {
+          return item.likes.includes(user?._id + "");
+        });
+
+        setCards(likedCards);
       } catch (error) {
-        console.error(`Error fetching cards: ${error}`);
-        toast.error(`Error fetching cards: ${error}`);
+        console.error("Error fetching cards:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
-    getCards();
-  }, []);
-  // Handle card editing
-  const handleEdit = (card: TCard) => {
-    setSelectedCard(card);
-    setShowEditModal(true);
-  };
+
+    fetchCards();
+  }, [user?._id]);
+
   return (
-    <div className="flex flex-col items-center justify-center gap-10 p-5 dark:bg-gray-800">
-      <h1 className="mb-4 text-center text-3xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">
-        My Cards
+    <div className="flex flex-col items-center justify-center gap-2 p-5 dark:bg-gray-800">
+      <h1 className="mb-4 text-center text-2xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white">
+        Favourites Page
       </h1>
 
       <div className="flex w-full flex-wrap justify-center gap-3">
         {cards &&
-          cards.map((card) => (
+          filteredBySearch()?.map((card) => (
             <div
               key={card._id}
               className="lg:w-m flex w-full justify-center sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
@@ -81,36 +102,24 @@ const UserCards = () => {
                   className={"cursor-pointer"}
                   onClick={() => nav("/card/" + card._id)}
                 >
-                  Read More
+                  Read More.
                 </Button>
                 <Button
                   className={
                     "cursor-pointer bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
                   }
-                  onClick={() => handleEdit(card)}
+                  onClick={() => handleRemove(card._id)}
                 >
-                  Edit
+                  Remove
                 </Button>
               </Card>
             </div>
           ))}
       </div>
 
-      {isLoading && <Spinner />}
-
-      {/* Edit Card Modal */}
-      {selectedCard && (
-        <EditCard
-          card={selectedCard}
-          show={showEditModal}
-          onClose={() => {
-            setShowEditModal(false);
-            setSelectedCard(null);
-          }}
-        />
-      )}
+      {loading && <Spinner></Spinner>}
     </div>
   );
 };
 
-export default UserCards;
+export default Favourites;

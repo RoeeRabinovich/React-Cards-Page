@@ -1,4 +1,4 @@
-import MapView from "../components/MapView";
+import MapView from "../../components/MapView/MapView";
 
 const About = () => {
   // Add address object for MapView

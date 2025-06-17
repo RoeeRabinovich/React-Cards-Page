@@ -1,6 +1,6 @@
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useState, useCallback } from "react";
-import { useGoogleMaps } from "../hooks/useGoogleMaps";
+import { useGoogleMaps } from "../../hooks/useGoogleMaps";
 
 interface MapViewProps {
   address: {

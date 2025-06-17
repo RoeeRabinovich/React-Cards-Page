@@ -1,12 +1,12 @@
 import { FieldPath, useForm, FieldError, FieldErrors } from "react-hook-form";
-import { TCard } from "../types/TCard";
+import { TCard } from "../../types/TCard";
 import { joiResolver } from "@hookform/resolvers/joi";
-import createCardSchema from "../validations/createCard.joi";
+import createCardSchema from "../../validations/createCard.joi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button, FloatingLabel } from "flowbite-react";
 import { useDispatch } from "react-redux";
-import { addCard } from "../../store/cardSlice";
+import { addCard } from "../../../store/cardSlice";
 
 function getNestedError(
   errors: FieldErrors<TCard>,

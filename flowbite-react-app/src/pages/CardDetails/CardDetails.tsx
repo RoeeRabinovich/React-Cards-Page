@@ -2,9 +2,9 @@ import axios from "axios";
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TCard } from "../types/TCard";
+import { TCard } from "../../types/TCard";
 import { IoIosReturnLeft } from "react-icons/io";
-import MapView from "../components/MapView";
+import MapView from "../../components/MapView/MapView";
 
 export const CardDetails = () => {
   const [card, setCard] = useState<TCard>();

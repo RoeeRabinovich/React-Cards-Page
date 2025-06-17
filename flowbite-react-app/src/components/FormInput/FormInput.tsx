@@ -1,8 +1,8 @@
 import { FloatingLabel } from "flowbite-react";
 import { UseFormRegister, FieldPath } from "react-hook-form";
-import { TRegisterData } from "../types/TRegisterData";
-import { TCard } from "../types/TCard";
-import { TUser } from "../../store/userSlice";
+import { TRegisterData } from "../../types/TRegisterData";
+import { TCard } from "../../types/TCard";
+import { TUser } from "../../../store/userSlice";
 
 interface FormInputProps<T extends TRegisterData | TCard | TUser> {
   register: UseFormRegister<T>;

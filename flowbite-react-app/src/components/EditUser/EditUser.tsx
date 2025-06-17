@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
-import { TUser, userActions } from "../../store/userSlice";
+import { TUser, userActions } from "../../../store/userSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";

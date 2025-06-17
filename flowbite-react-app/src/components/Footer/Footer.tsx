@@ -5,7 +5,7 @@ import {
   FooterLinkGroup,
 } from "flowbite-react";
 import { useSelector } from "react-redux";
-import { TRootState } from "../../store/store";
+import { TRootState } from "../../../store/store";
 import { Link } from "react-router";
 
 export function MyFooter() {

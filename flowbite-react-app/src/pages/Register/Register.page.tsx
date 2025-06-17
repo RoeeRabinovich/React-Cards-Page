@@ -1,10 +1,10 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
-import { registerSchema } from "../validations/register.joi";
+import { registerSchema } from "../../validations/register.joi";
 import axios from "axios";
 import { Button, Checkbox } from "flowbite-react";
-import FormInput from "../components/FormInput";
-import { TRegisterData } from "../types/TRegisterData";
+import FormInput from "../../components/FormInput/FormInput";
+import { TRegisterData } from "../../types/TRegisterData";
 import { FieldPath, FieldError, FieldErrors } from "react-hook-form";
 import { toast } from "react-toastify";
 

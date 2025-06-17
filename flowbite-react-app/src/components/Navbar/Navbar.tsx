@@ -9,9 +9,9 @@ import {
 import { Link } from "react-router";
 import { IoIosSearch } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { TRootState } from "../../store/store";
-import { userActions } from "../../store/userSlice";
-import { searchAction } from "../../store/searchSlice";
+import { TRootState } from "../../../store/store";
+import { userActions } from "../../../store/userSlice";
+import { searchAction } from "../../../store/searchSlice";
 
 export function MyNavbar() {
   const dispatch = useDispatch();

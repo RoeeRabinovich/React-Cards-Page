@@ -1,75 +1,70 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TRootState } from "../../store/store";
+import { TRootState } from "../../../store/store";
 import axios from "axios";
-import { storeCards, removeCard } from "../../store/cardSlice";
 import { toast } from "react-toastify";
 import { Button, Pagination, Spinner, Table } from "flowbite-react";
-import EditCard from "./EditCard";
-import { TCard } from "../types/TCard";
+import EditUser from "../EditUser/EditUser";
+import { TUser, userActions } from "../../../store/userSlice";
 
-const CardsTable = () => {
+const UsersTable = () => {
   // State management
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<TCard | null>(null);
+  const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   // Calculate indices for pagination
   const tilesPerPage = 10;
-  const indexOfLastCard = currentPage * tilesPerPage;
-  const indexOfFirstCard = indexOfLastCard - tilesPerPage;
-  // Redux hooks
+  const indexOfLastUser = currentPage * tilesPerPage;
+  const indexOfFirstUser = indexOfLastUser - tilesPerPage;
+
   const dispatch = useDispatch();
-  const user = useSelector((state: TRootState) => state.userSlice.user);
-  const cards = useSelector((state: TRootState) => state.cardSlice.cards) || [];
-  // Search functionality
+  const usersRaw = useSelector((state: TRootState) => state.userSlice.editUser);
+  const users = Array.isArray(usersRaw) ? usersRaw : [];
   const searchWord = useSelector(
     (state: TRootState) => state.searchSlice.searchWord,
   );
-
-  const filteredCards = Array.isArray(cards)
-    ? cards.filter((card) =>
-        card.title.toLowerCase().includes(searchWord.toLowerCase()),
-      )
-    : [];
-  // Calculate total pages based on filtered cards
-  const totalPages = Math.ceil(filteredCards.length / tilesPerPage);
-  const currentCards = filteredCards.slice(
-    (currentPage - 1) * tilesPerPage,
-    currentPage * tilesPerPage,
+  // Filter users based on the search word
+  const filteredUsers = users.filter(
+    (user: TUser) =>
+      user &&
+      user.name &&
+      user.name.first &&
+      user.name.first.toLowerCase().includes(searchWord.toLowerCase()),
   );
-
+  // Calculate total pages based on filtered users
+  const totalPages = Math.ceil(filteredUsers.length / tilesPerPage);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  // Fetch users from the API when the component mounts
   useEffect(() => {
-    const fetchCards = async () => {
-      if (user && !cards.length) {
-        setLoading(true);
-        try {
-          const { data } = await axios.get(
-            "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards",
-          );
-          dispatch(storeCards(Array.isArray(data) ? data : []));
-        } catch (error) {
-          console.error("Failed to fetch cards:", error);
-          toast.error("Failed to fetch cards");
-        } finally {
-          setLoading(false);
-        }
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          "https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users",
+        );
+        dispatch(userActions.editUser(data));
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+        toast.error("Failed to fetch users");
+      } finally {
+        setLoading(false);
       }
     };
-    fetchCards();
-  }, [user, cards.length, dispatch]);
-  // Handle card deletion
-  const handleDelete = async (cardId: string) => {
-    if (!window.confirm("Delete this card?")) return;
+    fetchUsers();
+  }, [dispatch]);
+  // Handle user deletion
+  const handleDelete = async (userId: string) => {
+    if (!window.confirm("Delete this user?")) return;
     try {
       await axios.delete(
-        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/cards/${cardId}`,
+        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${userId}`,
       );
-      dispatch(removeCard(cardId));
-      toast.success("Card deleted");
+      dispatch(userActions.removeUser(userId));
+      toast.success("User deleted");
     } catch (error) {
-      console.error("Failed to delete card:", error);
-      toast.error("Failed to delete card");
+      console.error("Failed to delete user:", error);
+      toast.error("Failed to delete user");
     }
   };
 
@@ -86,7 +81,7 @@ const CardsTable = () => {
         <thead>
           <tr className="bg-gray-50 dark:bg-gray-700">
             <th className="px-4 py-3 text-left text-sm font-medium whitespace-nowrap sm:px-6">
-              Title
+              Name
             </th>
             <th className="hidden px-4 py-3 text-left text-sm font-medium sm:table-cell sm:px-6">
               Email
@@ -100,19 +95,19 @@ const CardsTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-          {currentCards.map((card) => (
+          {currentUsers.map((user) => (
             <tr
-              key={card._id}
+              key={user._id}
               className="bg-white transition-colors hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700"
             >
               <td className="px-4 py-3 text-sm font-medium whitespace-nowrap text-gray-900 sm:px-6 dark:text-white">
-                {card.title}
+                {user.name.first} {user.name.last}
               </td>
               <td className="hidden px-4 py-3 text-sm text-gray-600 sm:table-cell sm:px-6 dark:text-gray-300">
-                {card.email}
+                {user.email}
               </td>
               <td className="hidden px-4 py-3 text-sm text-gray-600 sm:table-cell sm:px-6 dark:text-gray-300">
-                {card.phone}
+                {user.phone}
               </td>
               <td className="px-4 py-3 sm:px-6">
                 <div className="flex flex-col gap-2 sm:flex-row">
@@ -120,7 +115,7 @@ const CardsTable = () => {
                     className="w-full cursor-pointer bg-blue-500 text-white hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 sm:w-auto dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     size="sm"
                     onClick={() => {
-                      setSelectedCard(card);
+                      setSelectedUser(user);
                       setShowEditModal(true);
                     }}
                   >
@@ -129,7 +124,8 @@ const CardsTable = () => {
                   <Button
                     className="w-full cursor-pointer bg-red-500 text-white hover:bg-red-600 focus:ring-4 focus:ring-red-300 sm:w-auto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                     size="sm"
-                    onClick={() => handleDelete(card._id)}
+                    onClick={() => handleDelete(user._id)}
+                    disabled={user.isAdmin}
                   >
                     Remove
                   </Button>
@@ -139,8 +135,6 @@ const CardsTable = () => {
           ))}
         </tbody>
       </Table>
-
-      {/* Responsive Pagination */}
       {totalPages > 1 && (
         <div className="mx-auto mt-8 flex max-w-screen-lg flex-col items-center justify-center space-y-4">
           <Pagination
@@ -153,22 +147,21 @@ const CardsTable = () => {
             previousLabel=""
             nextLabel=""
           />
-
           <div className="text-center text-sm text-gray-700 dark:text-gray-400">
             <span className="hidden sm:inline">Showing </span>
-            {indexOfFirstCard + 1} -{" "}
-            {Math.min(indexOfLastCard, filteredCards.length)} of{" "}
-            {filteredCards.length}
+            {indexOfFirstUser + 1} -{" "}
+            {Math.min(indexOfLastUser, filteredUsers.length)} of{" "}
+            {filteredUsers.length}
           </div>
         </div>
       )}
-      {selectedCard && (
-        <EditCard
-          card={selectedCard}
+      {selectedUser && (
+        <EditUser
+          user={selectedUser}
           show={showEditModal}
           onClose={() => {
             setShowEditModal(false);
-            setSelectedCard(null);
+            setSelectedUser(null);
           }}
         />
       )}
@@ -176,4 +169,4 @@ const CardsTable = () => {
   );
 };
 
-export default CardsTable;
+export default UsersTable;
