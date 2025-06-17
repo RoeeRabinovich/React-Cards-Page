@@ -57,6 +57,11 @@ const EditUser = ({ user, show, onClose, onSave }: EditUserProps) => {
       toast("User updated successfully!", {
         position: "bottom-center",
         autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
         theme: "dark",
       });
       onClose();
@@ -65,6 +70,11 @@ const EditUser = ({ user, show, onClose, onSave }: EditUserProps) => {
       toast.error("Failed to update user, please try again.", {
         position: "bottom-center",
         autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
         theme: "dark",
       });
     }

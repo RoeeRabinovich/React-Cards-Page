@@ -50,7 +50,16 @@ const CardsTable = () => {
           dispatch(storeCards(Array.isArray(data) ? data : []));
         } catch (error) {
           console.error("Failed to fetch cards:", error);
-          toast.error("Failed to fetch cards");
+          toast.error("Failed to fetch cards. Please try again.", {
+            position: "bottom-center",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
         } finally {
           setLoading(false);
         }

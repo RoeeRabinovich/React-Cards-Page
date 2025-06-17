@@ -71,6 +71,16 @@ function MyCard() {
       }
     } catch (error) {
       console.log("Error liking/unliking a card:", error);
+      toast.error("Error liking/unliking card. Please try again later.", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 

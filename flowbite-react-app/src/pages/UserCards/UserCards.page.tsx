@@ -29,7 +29,16 @@ const UserCards = () => {
         setCards(response.data);
       } catch (error) {
         console.error(`Error fetching cards: ${error}`);
-        toast.error(`Error fetching cards: ${error}`);
+        toast.error(`Error fetching cards: ${error}`, {
+          position: "bottom-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       } finally {
         setIsLoading(false);
       }

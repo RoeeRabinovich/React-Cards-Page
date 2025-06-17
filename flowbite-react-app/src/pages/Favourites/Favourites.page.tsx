@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TRootState } from "../../../store/store";
 import { TCard } from "../../types/TCard";
+import { toast } from "react-toastify";
 const Favourites = () => {
   const [cards, setCards] = useState<TCard[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,6 +55,16 @@ const Favourites = () => {
         setCards(likedCards);
       } catch (error) {
         console.error("Error fetching cards:", error);
+        toast.error("Failed to fetch cards. Please try again.", {
+          position: "bottom-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       } finally {
         setLoading(false);
       }

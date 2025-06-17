@@ -68,11 +68,29 @@ const CreateCard = () => {
         data,
       );
       dispatch(addCard(response.data));
-      toast.success("Card created successfully!");
+      toast("Card created successfully!", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       reset();
     } catch (error) {
       console.log("Error creating card", error);
-      toast.error("Failed to create card. Please try again.");
+      toast.error("Failed to create card. Please try again.", {
+        position: "bottom-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
   const cardFields = [
