@@ -1,54 +1,93 @@
-# React + TypeScript + Vite
+# R-Cards React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+R-Cards is a full-featured business card management application built with React, Redux, TypeScript, Vite, and Flowbite-React. It supports user authentication, role-based access, card CRUD operations, favorites, and a modern responsive UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **User Authentication:** Register, login, and logout with secure JWT-based authentication.
+- **Role-Based Access:** Supports regular users, business users (can create cards), and admins (can manage users/cards).
+- **Card Management:** Create, view, edit, and delete business cards. Cards include title, description, contact info, and images.
+- **Favorites:** Users can like/unlike cards and view their favorites.
+- **Profile Management:** Users can view and edit their profile details.
+- **Admin Panel:** Admins can view, edit, and delete any user or card.
+- **Search & Pagination:** Search cards/users and navigate large lists with pagination.
+- **Responsive UI:** Built with Flowbite-React and Tailwind CSS for a modern, mobile-friendly experience.
+- **Form Validation:** All forms use Joi schemas for robust validation and user feedback.
+- **Notifications:** Uses React-Toastify for instant feedback on actions and errors.
+- **API Integration:** Axios is used for all backend communication, with token management and error handling.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+## Tech Stack
+
+- **Frontend:** React 19, TypeScript, Vite, Flowbite-React, Tailwind CSS
+- **State Management:** Redux Toolkit
+- **Forms & Validation:** React Hook Form, Joi
+- **Routing:** React Router v7
+- **HTTP Client:** Axios
+- **Notifications:** React-Toastify
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository or download the project files.
+2. Navigate to the project directory:
+   ```sh
+   cd "React Cards Page/flowbite-react-app"
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
+
+### Running the App
+
+```sh
+npm run dev
+# or
+yarn dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will be available at `http://localhost:5173` by default.
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+## Project Structure
+
+- `src/components/` - Reusable UI components (CardsTable, UsersTable, Edit forms, Footer, etc.)
+- `src/pages/` - Page components for each route (Home, About, Profile, AdminPanel, etc.)
+- `src/validations/` - Joi schemas for form validation (register, login, createCard)
+- `store/` - Redux slices and store configuration (userSlice, cardSlice, etc.)
+- `public/` - Static assets (logo, images)
+- `index.html` - Main HTML template
+
+---
+
+## Development Notes
+
+- **Type Safety:** All components and Redux slices use TypeScript for type safety.
+- **Error Handling:** API errors are caught and displayed to users via toast notifications.
+- **Form UX:** Forms disable the submit button if no changes are made or if validation fails.
+- **Instant UI Updates:** Redux state updates immediately after edits, so the UI reflects changes without a full refresh.
+
+---
+
+## License
+
+MIT
+
+---
+
+Created by Roee Rabinovich

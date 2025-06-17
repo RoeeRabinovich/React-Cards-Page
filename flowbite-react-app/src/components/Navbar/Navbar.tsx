@@ -28,7 +28,7 @@ export function MyNavbar() {
           <img
             src="../../public/letter-r-svgrepo-com.svg"
             className="mr-3 h-6 rounded-full sm:h-9"
-            alt="Random picture"
+            alt="RCards logo"
           />
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
             R-Cards
