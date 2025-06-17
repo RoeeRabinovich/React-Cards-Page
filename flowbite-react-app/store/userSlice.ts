@@ -56,26 +56,44 @@ const userSlice = createSlice({
       localStorage.removeItem("user");
     },
     editUser: (state, action) => {
-      // Check if editUser array exists
+      // Accepts an array of users and replaces the state
+      if (Array.isArray(action.payload)) {
+        state.editUser = action.payload;
+        return;
+      }
+      // Fallback: single user update logic
       if (!state.editUser) {
         state.editUser = [];
       }
-
-      // Find the user index
       const index = state.editUser.findIndex(
         (user) => user._id === action.payload._id,
       );
-
-      // Update existing user or add new one
       if (index !== -1) {
-        // Update existing user
         state.editUser[index] = {
           ...state.editUser[index],
           ...action.payload,
         };
       } else {
-        // Add new user
         state.editUser.push(action.payload);
+      }
+    },
+    removeUser: (state, action) => {
+      // Check if editUser array exists
+      if (!state.editUser) {
+        state.editUser = [];
+      }
+
+      // Filter out the user to be removed
+      state.editUser = state.editUser.filter(
+        (user) => user._id !== action.payload,
+      );
+    },
+    // Add a new user to the editUser array
+    updateUser: (state, action) => {
+      const updated = action.payload;
+      const idx = state.editUser.findIndex((u) => u._id === updated._id);
+      if (idx !== -1) {
+        state.editUser[idx] = updated;
       }
     },
   },

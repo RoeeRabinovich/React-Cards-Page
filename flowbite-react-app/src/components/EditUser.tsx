@@ -1,181 +1,115 @@
-import { FieldError, FieldErrors, FieldPath, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { TUser, userActions } from "../../store/userSlice";
-import { joiResolver } from "@hookform/resolvers/joi";
-import { registerSchema } from "../validations/register.joi";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
-import FormInput from "./FormInput";
-import { TRegisterData } from "../types/TRegisterData";
-
-// Simplified and more reliable error getter
-function getNestedError(
-  errors: FieldErrors<TUser>,
-  path: FieldPath<TUser>,
-): FieldError | undefined {
-  // Handle simple paths first
-  if (path in errors) {
-    return errors[path as keyof FieldErrors<TUser>] as FieldError;
-  }
-
-  // Handle nested paths
-  const parts = path.split(".");
-  let current: FieldErrors<TUser> | FieldError | undefined = errors;
-
-  for (const part of parts) {
-    if (current && typeof current === "object" && part in current) {
-      current = (current as Record<string, FieldError | FieldErrors<TUser>>)[
-        part
-      ];
-    } else {
-      return undefined;
-    }
-  }
-
-  // Check if current is a FieldError
-  if (current && typeof current === "object" && "message" in current) {
-    return current as FieldError;
-  }
-
-  return undefined;
-}
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 
 interface EditUserProps {
   user: TUser;
   show: boolean;
   onClose: () => void;
+  onSave?: (data: Partial<TUser>) => void;
 }
-const EditUser = ({ user, show, onClose }: EditUserProps) => {
+
+const EditUser = ({ user, show, onClose, onSave }: EditUserProps) => {
+  const [isChanged, setIsChanged] = useState(false);
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<TUser>({
-    defaultValues: {
-      _id: user?._id || "",
-      name: {
-        first: user?.name?.first || "",
-        middle: user?.name?.middle || "",
-        last: user?.name?.last || "",
-      },
-      phone: user?.phone || "",
-      image: {
-        url: user?.image?.url || "",
-        alt: user?.image?.alt || "",
-      },
-      isBusiness: user?.isBusiness || false,
-      isAdmin: user?.isAdmin || false,
-      email: user?.email || "",
-      address: {
-        city: user?.address?.city || "",
-        state: user?.address?.state || "",
-        country: user?.address?.country || "",
-        houseNumber: user?.address?.houseNumber || "",
-        street: user?.address?.street || "",
-        zip: user?.address?.zip || "",
-      },
-    },
-    resolver: joiResolver(registerSchema),
+  const { register, handleSubmit, reset, watch, setValue } = useForm<{
+    isBusiness: boolean;
+  }>({
     mode: "onChange",
+    defaultValues: { isBusiness: user.isBusiness },
   });
+  // Watch the isBusiness field to assure reactivity
+  const currentIsBusinessValue = watch("isBusiness");
+  // Reset form when user changes
+  useEffect(() => {
+    reset({ isBusiness: user.isBusiness });
+  }, [user, reset]);
+  // Check if the isBusiness value has changed
+  useEffect(() => {
+    setIsChanged(user.isBusiness !== currentIsBusinessValue);
+  }, [user.isBusiness, currentIsBusinessValue]);
 
-  const userFields: Array<{
-    name: FieldPath<TRegisterData>;
-    label: string;
-    type?: string;
-    required?: boolean;
-    options?: { value: string; label: string }[];
-  }> = [
-    { name: "name.first", label: "First Name", required: true },
-    { name: "name.middle", label: "Middle Name", required: false },
-    { name: "name.last", label: "Last Name", required: true },
-    { name: "phone", label: "Phone", type: "tel", required: true },
-    { name: "email", label: "Email", type: "email", required: true },
-    {
-      name: "isBusiness",
-      label: "Is Business",
-      type: "checkbox",
-    },
-    {
-      name: "isAdmin",
-      label: "Is Admin",
-      type: "checkbox",
-    },
-    { name: "image.url", label: "Image URL", required: true },
-    { name: "image.alt", label: "Image Alt Text", required: true },
-    { name: "address.street", label: "Street", required: true },
-    { name: "address.houseNumber", label: "House Number", required: true },
-    { name: "address.city", label: "City", required: true },
-    { name: "address.state", label: "State", required: true },
-    { name: "address.country", label: "Country", required: true },
-    { name: "address.zip", label: "Zip Code", required: true },
-  ];
-
-  const onSubmit = async (data: TUser) => {
+  const onSubmit = async (data: { isBusiness: boolean }) => {
     try {
-      const response = await axios.put(
-        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user?._id}`,
-        data,
+      const { isBusiness } = data;
+
+      const response = await axios.patch(
+        `https://monkfish-app-z9uza.ondigitalocean.app/bcard2/users/${user._id}`,
+        { isBusiness },
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("token") || "",
+          },
+        },
       );
-      dispatch(userActions.editUser(response.data));
+      setValue("isBusiness", response.data.isBusiness, {
+        shouldValidate: true,
+        shouldDirty: false,
+      });
+      if (onSave) onSave(response.data);
+      dispatch(userActions.storeUser(response.data));
+      // Update the users array in Redux
+      dispatch(userActions.updateUser(response.data)); //
       toast("User updated successfully!", {
         position: "bottom-center",
         autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "dark",
       });
-      onClose(); // Close the modal after successful submission
+      onClose();
     } catch (error) {
       console.error("Error updating user:", error);
-      toast.error("Failed to update user. Please try again.", {
+      toast.error("Failed to update user, please try again.", {
         position: "bottom-center",
         autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "dark",
       });
     }
   };
-  return (
-    <Modal show={show} onClose={onClose} size="4xl">
-      <ModalHeader>Edit User</ModalHeader>
-      <ModalBody className="dark:bg-gray-900">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            {userFields.map((field) => {
-              const error = getNestedError(
-                errors,
-                field.name as FieldPath<TUser>,
-              );
 
-              return (
-                <div key={field.name}>
-                  <FormInput
-                    register={register}
-                    name={field.name}
-                    label={field.label}
-                    type={field.type}
-                    required={field.required}
-                    error={error ? { message: error.message || "" } : null}
-                  />
-                </div>
-              );
-            })}
+  return (
+    <Modal show={show} onClose={onClose}>
+      <ModalHeader>Edit User</ModalHeader>
+      <ModalBody>
+        <h2 className="mb-2 text-lg font-semibold">
+          Name:{" "}
+          <span className="font-normal">
+            {user?.name.first} {user?.name.last}
+          </span>
+          {user?.isAdmin ? <span className="font-normal">(Admin)</span> : null}
+          <span>
+            {currentIsBusinessValue ? (
+              <span className="font-normal">(Business)</span>
+            ) : null}
+          </span>
+        </h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <label htmlFor="isBusiness" className="ml-2">
+              Is Business
+            </label>
+            <input
+              type="checkbox"
+              id="isBusiness"
+              checked={currentIsBusinessValue}
+              {...register("isBusiness")}
+            />
           </div>
           <div className="flex justify-end gap-2">
-            <Button color="gray" onClick={onClose}>
+            <Button
+              color="gray"
+              onClick={() => {
+                onClose();
+                setIsChanged(user.isBusiness);
+              }}
+              type="button"
+            >
               Cancel
             </Button>
-            <Button type="submit" disabled={!isValid}>
+            <Button type="submit" disabled={!isChanged}>
               Save Changes
             </Button>
           </div>
@@ -184,4 +118,5 @@ const EditUser = ({ user, show, onClose }: EditUserProps) => {
     </Modal>
   );
 };
+
 export default EditUser;

@@ -1,26 +1,23 @@
 import { Button } from "flowbite-react";
 
-type EditModeType = "cards" | "users";
+type Mode = "cards" | "users";
 
-interface EditModeToggleProps {
-  currentMode: EditModeType;
-  onModeChange: (mode: EditModeType) => void;
+interface EditModeProps {
+  mode: Mode;
+  setMode: (mode: Mode) => void;
 }
 
-export const EditMode = ({
-  currentMode,
-  onModeChange,
-}: EditModeToggleProps) => (
-  <div className="flex justify-center gap-4">
+export const EditMode = ({ mode, setMode }: EditModeProps) => (
+  <div className="mb-6 flex justify-center gap-4">
     <Button
-      color={currentMode === "cards" ? "blue" : "gray"}
-      onClick={() => onModeChange("cards")}
+      color={mode === "cards" ? "blue" : "gray"}
+      onClick={() => setMode("cards")}
     >
       Cards
     </Button>
     <Button
-      color={currentMode === "users" ? "blue" : "gray"}
-      onClick={() => onModeChange("users")}
+      color={mode === "users" ? "blue" : "gray"}
+      onClick={() => setMode("users")}
     >
       Users
     </Button>
