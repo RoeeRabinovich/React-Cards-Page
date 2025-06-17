@@ -46,6 +46,7 @@ interface EditCardProps {
   card: TCard;
   show: boolean;
   onClose: () => void;
+  onSave?: (data: Partial<TCard>) => void;
 }
 
 const EditCard = ({ card, show, onClose }: EditCardProps) => {
