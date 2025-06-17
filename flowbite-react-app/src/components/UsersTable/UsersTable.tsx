@@ -46,7 +46,16 @@ const UsersTable = () => {
         dispatch(userActions.editUser(data));
       } catch (error) {
         console.error("Failed to fetch users:", error);
-        toast.error("Failed to fetch users");
+        toast.error("Failed to fetch users. Please try again.", {
+          position: "bottom-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       } finally {
         setLoading(false);
       }
