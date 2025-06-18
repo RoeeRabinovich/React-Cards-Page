@@ -1,5 +1,5 @@
 import { MyNavbar } from "./components/Navbar/Navbar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login/login.page";
 import About from "./pages/About/About.page";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.page";
@@ -36,6 +36,7 @@ export default function App() {
       <MyNavbar />
       {/* // The main application component that includes the navbar, routes, and footer */}
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
 
         <Route path="/card/:id" element={<CardDetails />} />
