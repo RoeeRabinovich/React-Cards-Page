@@ -4,6 +4,7 @@ import { TRegisterData } from "../../types/TRegisterData";
 import { TCard } from "../../types/TCard";
 import { TUser } from "../../../store/userSlice";
 
+// interface for the props of FormInput component
 interface FormInputProps<T extends TRegisterData | TCard | TUser> {
   register: UseFormRegister<T>;
   name: FieldPath<T>;
@@ -13,7 +14,7 @@ interface FormInputProps<T extends TRegisterData | TCard | TUser> {
   required?: boolean;
   disabled?: boolean;
 }
-
+// this component is used to render a form input field with a label and error message
 const FormInput = <T extends TRegisterData | TCard | TUser>({
   register,
   name,

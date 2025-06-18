@@ -42,6 +42,7 @@ function getNestedError(
   return undefined;
 }
 
+// Define the props for the EditCard component
 interface EditCardProps {
   card: TCard;
   show: boolean;
@@ -79,7 +80,7 @@ const EditCard = ({ card, show, onClose }: EditCardProps) => {
     resolver: joiResolver(createCardSchema),
     mode: "onChange", // Enable real-time validation
   });
-
+  // Define the fields for the card form
   const cardFields: Array<{
     name: FieldPath<TCard>;
     label: string;

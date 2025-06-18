@@ -7,7 +7,7 @@ type RouteGuardProps = {
   bizOnly?: boolean;
   adminOnly?: boolean;
 };
-
+// This component is used to protect routes based on user roles (business or admin)
 const RouteGuard = (props: RouteGuardProps) => {
   const { children, bizOnly, adminOnly } = props;
 

@@ -6,7 +6,9 @@ import { TCard } from "../../types/TCard";
 import { IoIosReturnLeft } from "react-icons/io";
 import MapView from "../../components/MapView/MapView";
 
+// a simple component to display card details
 export const CardDetails = () => {
+  // state to hold card details and error message
   const [card, setCard] = useState<TCard>();
   const [error, setError] = useState<string>();
   const { id } = useParams<{ id: string }>();

@@ -13,6 +13,7 @@ import { TRootState } from "../../../store/store";
 import { userActions } from "../../../store/userSlice";
 import { searchAction } from "../../../store/searchSlice";
 
+// navbar component with links and search input based on user authentication status
 export function MyNavbar() {
   const dispatch = useDispatch();
   const user = useSelector((state: TRootState) => state.userSlice.user);

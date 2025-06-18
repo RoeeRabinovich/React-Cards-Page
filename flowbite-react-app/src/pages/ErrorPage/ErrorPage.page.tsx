@@ -1,6 +1,7 @@
 import { Button } from "flowbite-react";
 import { useNavigate, Link } from "react-router-dom";
 
+// This component displays a custom error page for 404 errors
 const ErrorPage = () => {
   const navigate = useNavigate();
   const navHome = () => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// a custom hook to load Google Maps JavaScript API
 export const useGoogleMaps = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 

@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+// This schema is used to validate the data for user registration
 export const registerSchema = Joi.object({
   name: Joi.object()
     .keys({

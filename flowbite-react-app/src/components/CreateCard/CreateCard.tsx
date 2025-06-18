@@ -8,6 +8,7 @@ import { Button, FloatingLabel } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { addCard } from "../../../store/cardSlice";
 
+// handle nested errors in a more robust way
 function getNestedError(
   errors: FieldErrors<TCard>,
   path: string,
@@ -93,6 +94,7 @@ const CreateCard = () => {
       });
     }
   };
+  // Define the fields for the business card form
   const cardFields = [
     { name: "title", label: "Title", type: "text", required: true },
     { name: "subtitle", label: "Subtitle", type: "text", required: true },
@@ -143,6 +145,7 @@ const CreateCard = () => {
         </p>
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
           {cardFields.map((field) => {
+            // Map through the fields to create form inputs
             const error = getNestedError(errors, field.name);
             return (
               <div key={field.name} className="relative">

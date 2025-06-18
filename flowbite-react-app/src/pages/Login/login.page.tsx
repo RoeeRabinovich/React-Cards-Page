@@ -86,7 +86,7 @@ const Login = () => {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center bg-white px-4 py-24 dark:bg-gray-800">
+    <main className="flex flex-col items-center justify-center bg-gray-50 px-4 py-24 dark:bg-gray-800">
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex w-full max-w-md flex-col gap-4 rounded-lg bg-white p-6 text-center shadow-md dark:bg-gray-900"

@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+// This schema is used to validate the data for user login
 export const loginSchema = Joi.object({
   email: Joi.string()
     .ruleset.pattern(/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/)

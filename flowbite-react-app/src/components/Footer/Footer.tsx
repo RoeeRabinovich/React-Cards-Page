@@ -10,6 +10,7 @@ import { TRootState } from "../../../store/store";
 import { Link } from "react-router";
 import { userActions } from "../../../store/userSlice";
 
+// footer component with links and user actions base on user authentication status
 export function MyFooter() {
   const dispatch = useDispatch();
   const user = useSelector((state: TRootState) => state.userSlice.user);

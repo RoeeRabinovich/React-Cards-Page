@@ -12,20 +12,20 @@ interface MapViewProps {
     zip: string | number;
   };
 }
-
+// This component displays a Google Map centered on the provided address
 const MapView = ({ address }: MapViewProps) => {
   const isLoaded = useGoogleMaps();
   const [center, setCenter] = useState({
     lat: 32.0853,
     lng: 34.7818,
-  });
+  }); // Default coordinates
   const [isLoading, setIsLoading] = useState(true);
 
   const mapStyles = {
     height: "400px",
     width: "100%",
   };
-
+  // Function to handle the map load event and geocode the address
   const handleLoad = useCallback(
     (map: google.maps.Map) => {
       const fullAddress = `${address.street} ${address.houseNumber}, ${address.city}, ${address.country}`;

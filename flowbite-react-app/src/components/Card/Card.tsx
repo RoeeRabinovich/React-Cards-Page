@@ -9,6 +9,7 @@ import { storeCards } from "../../../store/cardSlice";
 import { toast } from "react-toastify";
 import { FaHeart } from "react-icons/fa";
 
+// This component displays a list of cards with pagination and search functionality.
 function MyCard() {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +32,7 @@ function MyCard() {
     }
     return [];
   };
-
+  // Function to like or unlike a card
   const LikeOrUnlikeCard = async (cardId: string) => {
     try {
       const token = localStorage.getItem("token");
@@ -113,9 +114,9 @@ function MyCard() {
     }
   }, [cards.length, dispatch]);
 
+  // Calculate the indices for slicing the cards array based on the current page
   const filteredCards = filteredBySearch();
   const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filteredCards.slice(indexOfFirstCard, indexOfLastCard);

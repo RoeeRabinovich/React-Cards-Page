@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { TRootState } from "../../../store/store";
 import { TCard } from "../../types/TCard";
 import { toast } from "react-toastify";
+
+// This component displays a list of favourite cards for the user, allowing them to remove cards from their favourites.
 const Favourites = () => {
+  // states
   const [cards, setCards] = useState<TCard[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const nav = useNavigate();
@@ -14,7 +17,7 @@ const Favourites = () => {
     (state: TRootState) => state.searchSlice.searchWord,
   );
   const user = useSelector((state: TRootState) => state.userSlice.user);
-
+  // Function to handle removing a card from favourites
   const handleRemove = async (cardId: string) => {
     try {
       setLoading(true);
@@ -30,7 +33,7 @@ const Favourites = () => {
       setLoading(false);
     }
   };
-
+  // Function to filter cards based on the search word
   const filteredBySearch = () => {
     if (cards) {
       return cards.filter((card) =>
@@ -127,7 +130,7 @@ const Favourites = () => {
             </div>
           ))}
       </div>
-
+      {/* loading spinner */}
       {loading && <Spinner></Spinner>}
     </div>
   );

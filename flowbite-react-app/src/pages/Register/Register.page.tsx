@@ -8,6 +8,7 @@ import { TRegisterData } from "../../types/TRegisterData";
 import { FieldPath, FieldError, FieldErrors } from "react-hook-form";
 import { toast } from "react-toastify";
 
+// a function to get nested errors from the form state
 function getNestedError(
   errors: FieldErrors<TRegisterData>,
   path: string,
@@ -16,6 +17,8 @@ function getNestedError(
   let current: unknown = errors;
 
   for (const part of parts) {
+    // Iterate through each part of the path
+    // Check if current is an object and has the part as a key
     if (current && typeof current === "object" && part in current) {
       current = current[part as keyof typeof current];
     } else {
@@ -24,6 +27,7 @@ function getNestedError(
   }
 
   if (current && typeof current === "object" && "message" in current) {
+    // Check if current is a FieldError
     return current as FieldError;
   }
   return undefined;
@@ -96,6 +100,7 @@ const Register = () => {
     }
   };
 
+  // Define the fields for the registration form
   const registerFields = [
     { name: "name.first", label: "First Name" },
     { name: "name.middle", label: "Middle Name" },

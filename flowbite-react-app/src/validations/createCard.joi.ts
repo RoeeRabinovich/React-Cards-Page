@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+// This schema is used to validate the data for creating a new card
 const createCardSchema = Joi.object({
   title: Joi.string().min(2).max(256).required(),
   subtitle: Joi.string().min(2).max(256).required(),

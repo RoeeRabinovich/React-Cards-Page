@@ -25,6 +25,7 @@ export default function App() {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     if (token && user) {
+      // Check if token and user exist in localStorage
       axios.defaults.headers.common["x-auth-token"] = token;
       dispatch(userActions.login(JSON.parse(user)));
     }
@@ -33,16 +34,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <MyNavbar />
-
+      {/* // The main application component that includes the navbar, routes, and footer */}
       <Routes>
-        <Route
-          path="/home"
-          element={
-            <RouteGuard>
-              <Home />
-            </RouteGuard>
-          }
-        />
+        <Route path="/home" element={<Home />} />
 
         <Route path="/card/:id" element={<CardDetails />} />
 
