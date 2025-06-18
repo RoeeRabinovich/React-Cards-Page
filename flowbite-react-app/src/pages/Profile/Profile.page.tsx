@@ -5,6 +5,7 @@ import { Button } from "flowbite-react";
 import { IoIosReturnLeft } from "react-icons/io";
 import { useNavigate } from "react-router";
 
+// this is the Profile page component that displays user information and a map view of their address
 const Profile = () => {
   const user = useSelector((state: TRootState) => state.userSlice.user);
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Profile = () => {
               </li>
             </ul>
 
+            {/* // Display the map view of the user's address if available */}
             {user && (
               <div className="mt-8 w-full">
                 <MapView
